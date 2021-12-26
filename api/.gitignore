@@ -4,6 +4,13 @@ __pycache__/
 *$py.class
 *.pyc
 
+*.log
+*.pot
+*.pyc
+*/*/*/__pycache__/
+*/*/__pycache__/
+*/__pycache__/
+
 # C extensions
 *.so
 
