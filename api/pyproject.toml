@@ -19,6 +19,7 @@ black = "^21.12b0"
 pytest-django = "^4.5.2"
 pytest-sugar = "^0.9.4"
 pytest-watch = "^4.2.0"
+isort = "^5.10.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
