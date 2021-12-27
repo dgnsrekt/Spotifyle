@@ -2,6 +2,9 @@ from ninja import Schema, Field
 from pydantic import validator, HttpUrl
 from auth_api.schemas import SpotifyProfile
 from typing import Optional
+from faker import Faker
+
+fake = Faker()
 
 
 class SpotifyPublicProfile(SpotifyProfile):
@@ -17,3 +20,18 @@ class SpotifyPublicProfile(SpotifyProfile):
     @validator("external_urls", pre=True)
     def parse_external_urls(cls, external_urls):
         return external_urls.get("spotify")
+
+
+class Profile(Schema):
+    user_id: int
+    display_name: Optional[str]
+    image: Optional[str]
+    occupation: str = fake.job().title()
+    country: Optional[str]
+    bio: Optional[str]
+    twitter: Optional[str]
+
+
+class UpdateProfile(Schema):
+    bio: Optional[str]
+    twitter: Optional[str]

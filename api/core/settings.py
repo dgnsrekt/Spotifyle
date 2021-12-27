@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "auth_api.apps.AuthApiConfig",
     "profile_api.apps.ProfileApiConfig",
+    "game_api.apps.GameApiConfig",
 ]
 
 MIDDLEWARE = [
