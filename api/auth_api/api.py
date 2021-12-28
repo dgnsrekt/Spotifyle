@@ -24,7 +24,7 @@ def get_spotify_user_authorization_url(request, game_code: Optional[str] = None)
     return spotify.create_spotify_oauth2_url(state=state)
 
 
-@router.post("", response=schemas.AuthorizationResponse)
+@router.post("", response=schemas.AuthorizationResponse, url_name="auth")
 def verify_spotify_authorization(request, code: str, state: str):
     try:
         spotify_token = spotify.get_spotify_token_from_callback(callback_code=code)

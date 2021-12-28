@@ -3,8 +3,10 @@ from auth_api import spotify
 from . import schemas
 from . import models
 
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
+
 
 SPOTIFY_PUBLIC_USER_URL = "https://api.spotify.com/v1/users/{username}"
 
@@ -17,6 +19,8 @@ def get_users_public_profile_information(request, username):
     session = spotify.create_spotify_backend_session()
     url = SPOTIFY_PUBLIC_USER_URL.format(username=username)
     response = session.get(url)
+    if not response.ok:
+        raise Http404("Profile Not Found.")
     return response.json()
 
 
@@ -26,7 +30,7 @@ def get_current_users_profile(request):
     return user.profile
 
 
-@router.post("/me", response=schemas.Profile, url_name="me")
+@router.put("/me", response=schemas.Profile, url_name="me")
 def update_current_users_profile(request, profile_update: schemas.UpdateProfile):
     user = get_object_or_404(User, username=request.auth.username)
     models.Profile.objects.filter(user=user).update(**profile_update.dict())
