@@ -338,6 +338,17 @@ python-dateutil = ">=2.4"
 text-unidecode = "1.3"
 
 [[package]]
+name = "faker-music"
+version = "0.4"
+description = "Music Faker Community Provider"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.extras]
+test = ["pytest", "pytest-cov", "tox"]
+
+[[package]]
 name = "idna"
 version = "3.3"
 description = "Internationalized Domain Names in Applications (IDNA)"
@@ -828,7 +839,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "09453c966e0a28b1947a900b382eb87dffeabc377cb83a031340b5fac616d00f"
+content-hash = "97f14f2be6c165737a12c237db4f4ed16d3a685d997e340d3105cfabfc2adada"
 
 [metadata.files]
 amqp = [
@@ -991,6 +1002,10 @@ ecdsa = [
 faker = [
     {file = "Faker-10.0.0-py3-none-any.whl", hash = "sha256:3163c84866cf118ac5329a802e046b0f729528ce62ebb2806b626e0badbb6ff3"},
     {file = "Faker-10.0.0.tar.gz", hash = "sha256:530690ad12a2a054071af95fc8a354c5fd57b5e7707053a9662f40f14a87b68e"},
+]
+faker-music = [
+    {file = "faker_music-0.4-py2.py3-none-any.whl", hash = "sha256:7ad13d9a085cccc87d2b1f0510ff8a95c2176b41122ae289d38c321dbc29d8f2"},
+    {file = "faker_music-0.4.tar.gz", hash = "sha256:119293298f29c77994675e3f5dfeb7d065ef24aeb84810eb0bd2846b38fb59e7"},
 ]
 idna = [
     {file = "idna-3.3-py3-none-any.whl", hash = "sha256:84d9dd047ffa80596e0f246e2eab0b391788b0503584e8945f2368256d2735ff"},

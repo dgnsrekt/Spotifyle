@@ -1,4 +1,5 @@
 from django.db.models.signals import post_save
+
 # from django.contrib.auth.models import User
 from django.dispatch import receiver
 
@@ -13,7 +14,7 @@ from .models import Profile
 def create_profile(sender, instance, created, **kwargs):
     if not created:
         return
-
+    # TODO: Turn into a task
     spotify_token = auth_api.schemas.SpotifyToken.from_orm(instance)
     session = create_spotify_session_with_token(spotify_token=spotify_token)
     # TODO: Need to check if token is still valid after this.

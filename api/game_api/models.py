@@ -8,6 +8,9 @@ from assets.models import SpotifyAsset
 class Game(models.Model):
     game_code = models.SlugField(max_length=32)
     publisher = models.ForeignKey(User, on_delete=models.CASCADE)
+    task_id = models.SlugField(max_length=32)
+    processed = models.BooleanField(default=False)
+    name = models.CharField(max_length=256)
 
 
 class Stage(models.Model):
@@ -25,7 +28,7 @@ class Stage(models.Model):
 class Choice(models.Model):
     stage = models.ForeignKey(Stage, on_delete=models.CASCADE)
     description = models.CharField(max_length=256, null=True)
-    spotify_assert = models.ManyToManyField(SpotifyAsset)
+    spotify_asset = models.ManyToManyField(SpotifyAsset)
     correct = models.BooleanField()
 
 

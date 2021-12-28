@@ -1,13 +1,18 @@
 from ninja import Router
+from . import tasks
+from . import schemas
+from . import models
+from celery.result import AsyncResult
+from typing import List
 
-from . import stage_maker
+from django.shortcuts import get_list_or_404
 
 router = Router()
 
 # List all games
 # List games user created / owned
-# List games user has played
-# List games user has not played
+# List games user has played #NOTE: Need Scoreboard for this.
+# List games user has not played #NOTE: Need Scoreboard for this.
 # Get number of players by game
 # Get a games share link
 # Get a games owner and score
@@ -15,6 +20,29 @@ router = Router()
 # Create a new game
 
 
-@router.get("")
+@router.post("", response={200: schemas.Status, 429: schemas.Message})
+def create_game(request, publisher_id: int, max_stages: int = 5):
+    if models.Game.objects.filter(publisher_id=publisher_id, processed=False).exists():
+        return 429, schemas.Message(message="Game already being processed.")
+
+    # TODO: Cannot create game if owner has unplayed games created by owner.
+
+    status = tasks.create_game.delay(publisher_id=publisher_id, max_stages=max_stages)
+    return 200, schemas.Status(task_id=status.id, **status._get_task_meta())
+
+
+@router.get("/check", response=schemas.Status)
+def check_status(request, status_id: str):
+    status = AsyncResult(id=status_id)
+    return schemas.Status(**status._get_task_meta())
+
+
+@router.get("", response=List[schemas.GameResponse])
 def list_games(request):
-    return "games"
+    return models.Game.objects.all()
+
+
+@router.get("/publisher/{publisher_id}", response=List[schemas.GameResponse])
+def list_games_by_publisher(request, publisher_id: int):
+    games = get_list_or_404(models.Game, publisher_id=publisher_id)
+    return games

@@ -1,24 +1,38 @@
 import itertools
 import random
 from typing import List
-from uuid import uuid4, uuid5
+from uuid import uuid4
 
 from ninja import Schema
+
+from faker import Faker
+from faker_music import MusicProvider
 
 from assets import models as asset_models
 
 from . import models, trivia
 
 
-def generate_game_code(username):
+def generate_game_code():
     def _generate_code():
-        return uuid5(uuid4(), username).hex.upper()
+        return uuid4().hex.upper()
 
     code = _generate_code()
     while models.Game.objects.filter(game_code=code).exists():
         code = _generate_code()
+        print(code)
 
     return code
+
+
+def generate_game_name(game_code):
+    fake = Faker()
+    fake.add_provider(MusicProvider)
+
+    sub = fake.music_subgenre()
+    color = fake.color_name()
+
+    return f"{color} {sub} {game_code[:8]}".replace(" ", "-").upper()
 
 
 class Choice(Schema):
@@ -30,9 +44,6 @@ class Stage(Schema):
     puzzle_type: int
     question: str
     choices: List[Choice]
-
-
-import time
 
 
 def stage_one_processor_old(*, publisher_id: int, max_stages: int):
@@ -72,6 +83,7 @@ def stage_one_processor_old(*, publisher_id: int, max_stages: int):
 
 
 def stage_one_processor(*, publisher_id: int, max_stages: int):
+    """Artist Trivia"""
     assets = asset_models.SpotifyAsset.objects.filter(
         spotify_type="artist", observers=publisher_id, image__isnull=False
     )
@@ -103,16 +115,8 @@ def stage_one_processor(*, publisher_id: int, max_stages: int):
     return stages
 
 
-# from pprint import pprint
-
-# stages = stage_one_processor_new(publisher_id=1, max_stages=5)
-# for stage in stages:
-# print(stage.json(indent=4))
-# stages = stage_one_processor(publisher_id=1, max_stages=5)
-# print(stages)
-
-
-def stage_two_processor(*, publisher_id: int, max_stages: int, choice_size: int):
+def stage_two_processor(*, publisher_id: int, max_stages: int, choice_size: int = 10):
+    """Find the Track"""
     assets = asset_models.SpotifyAsset.objects.filter(
         spotify_type="track", observers=publisher_id, image__isnull=False, preview__isnull=False
     )
@@ -130,6 +134,7 @@ def stage_two_processor(*, publisher_id: int, max_stages: int, choice_size: int)
 
 
 def stage_three_processor(*, publisher_id: int, max_stages: int):
+    """Lockin the Track"""
     assets = asset_models.SpotifyAsset.objects.filter(
         spotify_type="track", observers=publisher_id, image__isnull=False, preview__isnull=False
     )
@@ -146,31 +151,3 @@ def stage_three_processor(*, publisher_id: int, max_stages: int):
         stage = Stage(question="Lock in the Track", puzzle_type=3, choices=choice_set)
         stages.append(stage)
     return stages
-
-
-# one = stage_one_processor(publisher_id=1, max_stages=5)
-# two = stage_two_processor(publisher_id=1, max_stages=5, choice_size=10)
-# three = stage_three_processor(publisher_id=1, max_stages=5)
-
-# stages = one + two + three
-
-# random.shuffle(stages)
-
-# for s in stages:
-#     print(s.json(indent=4))
-
-
-# r = random.sample(list(range(50)), k=8)
-# print(sorted(r))
-# print(y + y)
-
-
-# stages = stage_two_processor(publisher_id=1, max_stages=5)
-# for s in stages:
-#     print(s.json(indent=4))
-
-
-# game_code = generate_game_code()
-# game = models.Game.objects.create(publisher_id=publisher_id, game_code=game_code)
-#
-# stage = models.Stage.objects.create(game_id=game.id)
