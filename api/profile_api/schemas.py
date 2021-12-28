@@ -4,7 +4,10 @@ from auth_api.schemas import SpotifyProfile
 from typing import Optional
 from faker import Faker
 
-fake = Faker()
+
+def create_fake_occupation():
+    fake = Faker()
+    return fake.job().title()
 
 
 class SpotifyPublicProfile(SpotifyProfile):
@@ -26,7 +29,7 @@ class Profile(Schema):
     user_id: int
     display_name: Optional[str]
     image: Optional[str]
-    occupation: str = fake.job().title()
+    occupation: str = create_fake_occupation()
     country: Optional[str]
     bio: Optional[str]
     twitter: Optional[str]

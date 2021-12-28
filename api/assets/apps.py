@@ -1,9 +1,9 @@
 from django.apps import AppConfig
 
 
-class ProfileApiConfig(AppConfig):
+class AssetsConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "profile_api"
+    name = "assets"
 
     def ready(self):
         from . import signals

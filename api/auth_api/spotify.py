@@ -54,6 +54,7 @@ def create_spotify_session_with_token(*, spotify_token: schemas.SpotifyToken):
         token=token,
         auto_refresh_url=SPOTIFY_TOKEN_URL,
         auto_refresh_kwargs=extras,
+        # token_updater=,
     )
     return session
 

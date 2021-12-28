@@ -45,6 +45,7 @@ def verify_spotify_authorization(request, code: str, state: str):
         models.SpotifyToken.objects.filter(owner=owner).update(**spotify_token.dict())
         token = get_object_or_404(models.SpotifyToken, owner=owner)
         token_created = False
+        token.save()
 
     verified_user = schemas.User.from_orm(owner)
 

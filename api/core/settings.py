@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "auth_api.apps.AuthApiConfig",
     "profile_api.apps.ProfileApiConfig",
     "game_api.apps.GameApiConfig",
+    "assets.apps.AssetsConfig",
 ]
 
 MIDDLEWARE = [
@@ -156,3 +157,9 @@ JWT_ALGORITHM = env("JWT_ALGORITHM")
 SPOTIFY_CLIENT = env("SPOTIFY_CLIENT")
 SPOTIFY_SECRET = env("SPOTIFY_SECRET")
 SPOTIFY_REDIRECT = env("SPOTIFY_REDIRECT")
+
+# Celery Task
+# https://docs.celeryproject.org/en/stable/django/first-steps-with-django.html
+
+CELERY_BROKER_URL = env("CELERY_BROKER_URL")
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
