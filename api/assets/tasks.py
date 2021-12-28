@@ -1,14 +1,14 @@
-from celery import shared_task
-
-from django.contrib.auth.models import User
-
-import auth_api
-from .schemas import SpotifyTrack, SpotifyArtist, SpotifyAssets
-from . import models
-from pydantic import parse_obj_as
 from typing import List
 
+from celery import shared_task
+from django.contrib.auth.models import User
+from pydantic import parse_obj_as
 from requests.models import PreparedRequest
+
+import auth_api
+
+from . import models
+from .schemas import SpotifyArtist, SpotifyAssets, SpotifyTrack
 
 
 @shared_task(bind=True)

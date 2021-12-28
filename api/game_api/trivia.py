@@ -1,9 +1,11 @@
-import requests
-import string
-from .stop_words import STOP_WORDS
-from collections import Counter
-from django.conf import settings
 import random
+import string
+from collections import Counter
+
+import requests
+from django.conf import settings
+
+from .stop_words import STOP_WORDS
 
 TOKEN = settings.GENIUS_CLIENT_TOKEN
 

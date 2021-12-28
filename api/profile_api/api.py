@@ -1,12 +1,11 @@
-from ninja import Router
-from auth_api import spotify
-from . import schemas
-from . import models
-
+from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+from ninja import Router
 
+from auth_api import spotify
+
+from . import models, schemas
 
 SPOTIFY_PUBLIC_USER_URL = "https://api.spotify.com/v1/users/{username}"
 

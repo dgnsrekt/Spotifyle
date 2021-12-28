@@ -1,8 +1,10 @@
-from ninja import Schema, Field
-from pydantic import validator, HttpUrl
-from auth_api.schemas import SpotifyProfile
 from typing import Optional
+
 from faker import Faker
+from ninja import Field, Schema
+from pydantic import HttpUrl, validator
+
+from auth_api.schemas import SpotifyProfile
 
 
 def create_fake_occupation():

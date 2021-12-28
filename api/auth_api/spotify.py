@@ -1,7 +1,7 @@
 from django.conf import settings
-from requests_oauthlib import OAuth2Session
-from requests.auth import HTTPBasicAuth
 from oauthlib.oauth2 import BackendApplicationClient
+from requests.auth import HTTPBasicAuth
+from requests_oauthlib import OAuth2Session
 
 from . import schemas
 

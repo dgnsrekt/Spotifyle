@@ -1,13 +1,12 @@
 from django.db.models.signals import post_save
-
 # from django.contrib.auth.models import User
 from django.dispatch import receiver
 
 import auth_api
 from auth_api.spotify import create_spotify_session_with_token
 
-from .models import Profile
 from . import schemas
+from .models import Profile
 
 
 @receiver(post_save, sender=auth_api.models.SpotifyToken)

@@ -1,6 +1,7 @@
-from ninja import Schema, Field
-from typing import Optional, List, Union
-from pydantic import validator, HttpUrl
+from typing import List, Optional, Union
+
+from ninja import Field, Schema
+from pydantic import HttpUrl, validator
 
 
 class URL(Schema):

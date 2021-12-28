@@ -1,8 +1,10 @@
 import pytest
-from . import schemas
-from auth_api import jwt
-import auth_api
 from django.urls import reverse
+
+import auth_api
+from auth_api import jwt
+
+from . import schemas
 
 
 @pytest.fixture

@@ -1,9 +1,13 @@
+import itertools
+import random
+from typing import List
 from uuid import uuid4, uuid5
-from . import models
-from assets import models as asset_models
-from . import trivia
 
 from ninja import Schema
+
+from assets import models as asset_models
+
+from . import models, trivia
 
 
 def generate_game_code(username):
@@ -15,11 +19,6 @@ def generate_game_code(username):
         code = _generate_code()
 
     return code
-
-
-import random
-import itertools
-from typing import List
 
 
 class Choice(Schema):

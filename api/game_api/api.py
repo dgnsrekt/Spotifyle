@@ -1,6 +1,6 @@
 from ninja import Router
-from . import stage_maker
 
+from . import stage_maker
 
 router = Router()
 
