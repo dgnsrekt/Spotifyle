@@ -64,6 +64,9 @@ def get_players_profile(request, player_id: int):
 @router.post("/answer")
 def submit_players_answer(request, player_id: int, choice_id: int, wager: int):
     # TODO: Add gamecode to check if answer is in the correct game
+    # TODO: bonus points for streak, frontend keeps track of streak
+    # TODO: add bonus points as input. default to 0.
+
     players_choice = get_object_or_404(game_models.Choice, id=choice_id)
 
     score_board = get_object_or_404(
@@ -79,6 +82,7 @@ def submit_players_answer(request, player_id: int, choice_id: int, wager: int):
 
         if answered_correct:
             score_board.score += wager
+            # TODO: if bonus points add here
         else:
             score_board.score -= wager
 
@@ -96,6 +100,7 @@ def submit_players_answer(request, player_id: int, choice_id: int, wager: int):
         answered_correct = players_choice.correct
         if answered_correct:
             score_board.score += wager
+            # TODO: if bonus points add here
         else:
             score_board.score -= wager
 
