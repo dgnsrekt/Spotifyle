@@ -31,6 +31,8 @@ def generate_game_name(game_code):
 
     sub = fake.music_subgenre()
     color = fake.color_name()
+    # TODO: strip/replace punctuation here with a space.
+    # TODO: max color/sub length
 
     return f"{color} {sub} {game_code[:8]}".replace(" ", "-").upper()
 

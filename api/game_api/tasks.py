@@ -51,10 +51,9 @@ def create_game(self, *, publisher_id: int, max_stages: int):
         )
         saved += 1
         for choice in stage.choices:
-            choice_object = stage_object.choice_set.create(correct=choice.correct)
-            asset = asset_models.SpotifyAsset.objects.get(id=choice.id)
-            choice_object.spotify_asset.add(asset)
-            choice_object.save()
+            choice_object = stage_object.choice_set.create(
+                correct=choice.correct, spotify_asset_id=choice.id
+            )
             saved += 1
 
     logger.info("game creation completed.")

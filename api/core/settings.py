@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "profile_api.apps.ProfileApiConfig",
     "game_api.apps.GameApiConfig",
     "assets.apps.AssetsConfig",
+    "play_api.apps.PlayApiConfig",
 ]
 
 MIDDLEWARE = [

@@ -28,16 +28,5 @@ class Stage(models.Model):
 class Choice(models.Model):
     stage = models.ForeignKey(Stage, on_delete=models.CASCADE)
     description = models.CharField(max_length=256, null=True)
-    spotify_asset = models.ManyToManyField(SpotifyAsset)
+    spotify_asset = models.ForeignKey(SpotifyAsset, on_delete=models.CASCADE)
     correct = models.BooleanField()
-
-
-# TODO: Create when the first player plays the game.
-class ScoreBoard(models.Model):
-    game = models.OneToOneField(Game, on_delete=models.CASCADE, primary_key=True)
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
-    score = models.BigIntegerField(null=True)
-
-    constraints = models.constraints.UniqueConstraint(
-        fields=["game", "player"], name="players_score"
-    )
