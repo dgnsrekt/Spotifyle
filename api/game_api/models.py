@@ -15,7 +15,6 @@ class Game(models.Model):
 
 class Stage(models.Model):
     class PuzzleType(models.IntegerChoices):
-        # TODO Change the names once we have the final idea
         ARTIST_TRIVIA = 1
         FIND_TRACK_ART = 2
         MULTIPLE_TRACK_LOCK_IN = 3
