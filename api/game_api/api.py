@@ -1,11 +1,10 @@
-from ninja import Router
-from . import tasks
-from . import schemas
-from . import models
-from celery.result import AsyncResult
 from typing import List
 
+from celery.result import AsyncResult
 from django.shortcuts import get_list_or_404
+from ninja import Router
+
+from . import models, schemas, tasks
 
 router = Router()
 

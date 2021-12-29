@@ -1,10 +1,12 @@
-from . import stages as stage_creator
-from . import models
-from assets import models as asset_models
-from celery import shared_task
-from celery.utils.log import get_task_logger
 import random
 
+from celery import shared_task
+from celery.utils.log import get_task_logger
+
+from assets import models as asset_models
+
+from . import models
+from . import stages as stage_creator
 
 logger = get_task_logger(__name__)
 

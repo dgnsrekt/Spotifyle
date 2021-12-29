@@ -3,8 +3,8 @@ from ninja import NinjaAPI
 from auth_api.api import router as auth_router
 from auth_api.jwt import AuthBearer, InvalidToken
 from game_api.api import router as game_router
-from profile_api.api import router as profile_router
 from play_api.api import router as play_router
+from profile_api.api import router as profile_router
 
 api = NinjaAPI(
     title="TopsifyleAPI",

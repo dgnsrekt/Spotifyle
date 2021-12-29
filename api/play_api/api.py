@@ -1,10 +1,11 @@
-from ninja import Router
-from game_api import models as game_models
-from django.shortcuts import get_object_or_404, get_list_or_404
 from django.contrib.auth.models import User
 from django.http import HttpResponseBadRequest
-from . import schemas
-from . import models
+from django.shortcuts import get_list_or_404, get_object_or_404
+from ninja import Router
+
+from game_api import models as game_models
+
+from . import models, schemas
 
 router = Router()
 

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Game, Stage, Choice
+
+from .models import Choice, Game, Stage
 
 # Register your models here.
 admin.register(Game)

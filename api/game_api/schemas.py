@@ -1,7 +1,7 @@
-from ninja import Schema
-from typing import Dict, Any, Optional, Union
 from datetime import datetime
+from typing import Any, Dict, Optional, Union
 
+from ninja import Schema
 
 ResultType = Dict[str, Union[str, int]]
 

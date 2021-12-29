@@ -1,5 +1,6 @@
-from ninja import Schema
 from typing import List, Optional
+
+from ninja import Schema
 from pydantic import parse_obj_as
 
 

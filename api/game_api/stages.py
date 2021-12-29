@@ -3,10 +3,9 @@ import random
 from typing import List
 from uuid import uuid4
 
-from ninja import Schema
-
 from faker import Faker
 from faker_music import MusicProvider
+from ninja import Schema
 
 from assets import models as asset_models
 
