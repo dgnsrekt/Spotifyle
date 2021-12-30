@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from celery.result import AsyncResult
 from django.shortcuts import get_list_or_404
@@ -42,6 +42,8 @@ def list_games(request):
 
 
 @router.get("/publisher/{publisher_id}", response=List[schemas.GameResponse])
-def list_games_by_publisher(request, publisher_id: int):
+def list_games_by_publisher(request, publisher_id: int, limit: Optional[int] = None):
     games = get_list_or_404(models.Game, publisher_id=publisher_id)
+    if limit:
+        return games[:limit]
     return games

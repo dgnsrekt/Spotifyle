@@ -7,3 +7,10 @@ export function getAuthenticationHeader() {
     return { Authorization: token_type + " " + access_token }
 }
 
+export function getAuthenticatedUserFromStorage() {
+    const user = sessionStorage.getItem("user")
+    if (!user) {
+        return null
+    }
+    return JSON.parse(user)
+}

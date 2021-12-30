@@ -1,9 +1,12 @@
 import './App.css';
 import LoginPage from './pages/LoginPage.jsx'
-import Dashboard from './pages/Dashboard';
+import MainPage from './pages/Dashboard';
+import { ProfileOverviewSection } from './pages/ProfileOverviewSection';
+import { GamesOverviewSection } from './pages/GamesOverviewSection';
 import { Routes, Route, useSearchParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { fetchJsonWebToken } from './services/auth';
+import { LeaderBoardSection } from './pages/LeaderBoard';
 
 function CallBack(props) {
   let [search, setSearch] = useSearchParams();
@@ -48,7 +51,11 @@ function App() {
     <div className="App">
       <Routes>
         <Route path="/" element={<LoginPage isLoggedIn={isLoggedIn} />} />
-        <Route path="dashboard" element={<Dashboard isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} />
+        <Route path="dashboard" element={<MainPage isLoggedIn={isLoggedIn} handleLogout={handleLogout} />} >
+          <Route index element={<ProfileOverviewSection />} />
+          <Route path="games" element={<GamesOverviewSection />} />
+          <Route path="leaderboard" element={<LeaderBoardSection />} />
+        </Route>
         <Route path="callback" element={<CallBack setIsLoggedIn={setIsLoggedIn} />} />
       </Routes>
     </div>
