@@ -9,7 +9,7 @@ SPOTIFY_CLIENT = settings.SPOTIFY_CLIENT
 SPOTIFY_SECRET = settings.SPOTIFY_SECRET
 SPOTIFY_REDIRECT = settings.SPOTIFY_REDIRECT
 
-SPOTIFY_REDIRECT = "http://localhost:8000/api/auth/callback"
+# SPOTIFY_REDIRECT = "http://localhost:8000/api/auth/callback" #TODO: REMOVE
 
 SPOTIFY_AUTHORIZE_URL = "https://accounts.spotify.com/authorize"
 SPOTIFY_TOKEN_URL = "https://accounts.spotify.com/api/token"

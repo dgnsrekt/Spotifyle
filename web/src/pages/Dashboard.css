@@ -1,0 +1,28 @@
+body {
+    background: #161819;
+    color: #d1cdc7;
+    height: 100vh;
+}
+
+header {
+    background: #1b1e1f;
+}
+
+#left-panel {
+    transform: translateY(-5%) !important;
+}
+
+#profile-image{
+    object-fit: cover;
+    width: 260px;
+    height: 260px;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+    text-decoration: none;
+    color: inherit;
+}
+
