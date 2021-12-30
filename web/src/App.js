@@ -1,6 +1,8 @@
 import './App.css';
 import LoginPage from './pages/LoginPage.jsx'
 import MainPage from './pages/Dashboard';
+import { ActiveGame } from './screens/ActiveGameScreen';
+import { CreateGameScreen } from './screens/GameCreationScreen';
 import { ProfileOverviewSection } from './pages/ProfileOverviewSection';
 import { GamesOverviewSection } from './pages/GamesOverviewSection';
 import { Routes, Route, useSearchParams, useNavigate } from 'react-router-dom';
@@ -37,6 +39,8 @@ function CallBack(props) {
 }
 
 
+
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   let navigate = useNavigate();
@@ -57,6 +61,9 @@ function App() {
           <Route path="leaderboard" element={<LeaderBoardSection />} />
         </Route>
         <Route path="callback" element={<CallBack setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="create/:taskID" element={<CreateGameScreen />} />
+        {/* <Route path="start" element={} /> */}
+        <Route path="play/:gameCode" element={<ActiveGame />} />
       </Routes>
     </div>
   );

@@ -2,6 +2,8 @@ import './LoginPage.css'
 import { fetchSpotifyRedirect } from '../services/auth'
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import '../animations/text.css'
+import '../animations/vibrate.css'
 
 
 

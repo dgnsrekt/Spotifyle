@@ -1,6 +1,10 @@
+import { createNewGame } from "../services/game"
+import { useNavigate } from "react-router-dom";
+
 export function GamesOverviewSection() {
     // const [publishedGamesList, updatePublishedGamesList] = useState([])
     // const [playerStats, updatePlayerStats] = useState({})
+    const navigate = useNavigate();
 
     // useEffect(() => {
     //     const getGamesUserPublished = async () => {
@@ -18,17 +22,28 @@ export function GamesOverviewSection() {
     //     getPlayerStats()
     // }, [])
 
+    function handleCreateNewGame(event) {
+
+        const startCreatingGame = async () => {
+            const gameCreationStatus = await createNewGame();
+            if (gameCreationStatus) {
+                navigate(`/create/${gameCreationStatus.task_id}`)
+            }
+        }
+        startCreatingGame()
+    }
+
 
     return (
         <div className="col-9 p-0" id="main-stats">
             <div className="container d-flex justify-content-around mt-3">
-                <div class="btn-group d-flex justify-content-between" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary">Played</button>
-                    <button type="button" class="btn btn-secondary">Unplayed</button>
-                    <button type="button" class="btn btn-secondary">All</button>
-                    <button type="button" class="btn btn-secondary">Published</button>
+                <div className="btn-group d-flex justify-content-between" role="group" aria-label="Basic example">
+                    <button type="button" className="btn btn-secondary">Played</button>
+                    <button type="button" className="btn btn-secondary">Unplayed</button>
+                    <button type="button" className="btn btn-secondary">All</button>
+                    <button type="button" className="btn btn-secondary">Published</button>
                 </div>
-                <button className="btn btn-success">Create New Game</button>
+                <button onClick={handleCreateNewGame} className="btn btn-success">Create New Game</button>
             </div>
         </div>
     )

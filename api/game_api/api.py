@@ -33,6 +33,7 @@ def create_game(request, publisher_id: int, max_stages: int = 5):
 @router.get("/check", response=schemas.Status)
 def check_status(request, status_id: str):
     status = AsyncResult(id=status_id)
+    print(status._get_task_meta())
     return schemas.Status(**status._get_task_meta())
 
 

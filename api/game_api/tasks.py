@@ -63,3 +63,4 @@ def create_game(self, *, publisher_id: int, max_stages: int):
 
     game_object.processed = True
     game_object.save()
+    return {"game_code": game_code}
