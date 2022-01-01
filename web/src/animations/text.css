@@ -1,10 +1,10 @@
 
-.text-color-change {
-	-webkit-animation: text-color-change 5s linear infinite alternate both;
-	        animation: text-color-change 5s linear infinite alternate both;
+.text-color-change-one {
+	-webkit-animation: text-color-change-one 5s linear infinite alternate both;
+	        animation: text-color-change-one 5s linear infinite alternate both;
 }
 
-@-webkit-keyframes text-color-change {
+@-webkit-keyframes text-color-change-one {
   0% {
     color: #19dcea;
   }
@@ -12,11 +12,34 @@
     color: #b22cf1;
   }
 }
-@keyframes text-color-change {
+@keyframes text-color-change-one {
   0% {
     color: #19dcea;
   }
   100% {
     color: #b22cf1;
+  }
+}
+
+.text-color-change-two {
+	-webkit-animation: text-color-change-two 5s linear infinite alternate both;
+	        animation: text-color-change-two 5s linear infinite alternate both;
+}
+
+@-webkit-keyframes text-color-change-two {
+  0% {
+    color: #a8eb12
+  }
+  100% {
+    color: #86A8E7
+  }
+}
+
+@keyframes text-color-change-two {
+  0% {
+    color: #a8eb12
+  }
+  100% {
+    color: #86A8E7
   }
 }

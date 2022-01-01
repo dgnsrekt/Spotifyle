@@ -1,0 +1,43 @@
+.gradient-one{
+	background-image: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 60s ease infinite;
+}
+
+.gradient-two{
+    background-image: linear-gradient(180deg, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+	background-size: 400% 400%;
+	animation: gradient 60s ease infinite;
+}
+
+.gradient-three{
+    background-image: linear-gradient(-45deg, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+	background-size: 400% 400%;
+	animation: gradient 60s ease infinite;
+}
+
+.gradient-four{
+    background-image: linear-gradient(45deg, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+	background-size: 400% 400%;
+	animation: gradient 60s ease infinite;
+}
+.gradient-five{
+     background-image: linear-gradient(90deg, #051937, #004d7a, #008793, #00bf72, #a8eb12);
+	background-size: 400% 400%;
+	animation: gradient 60s ease infinite;
+}
+
+
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
