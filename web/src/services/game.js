@@ -21,9 +21,9 @@ export async function fetchGamesCurrentUserPublished(limit = 5) {
 
 }
 
-export async function createNewGame() {
+export async function createNewGame(maxStages = 10) {
     const user = getAuthenticatedUserFromStorage()
-    const params = { publisher_id: user.id }
+    const params = { publisher_id: user.id, max_stages: maxStages }
     const url = urlcat(BASE_API_URL, "game", params);
     const instance = axios.create({
         headers: getAuthenticationHeader()
