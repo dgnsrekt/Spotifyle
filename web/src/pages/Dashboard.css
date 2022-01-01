@@ -12,6 +12,9 @@ header {
     transform: translateY(-5%) !important;
 }
 
+#logout-button{
+    transform: translateY(-35%) !important;
+}
 #profile-image{
     object-fit: cover;
     width: 260px;

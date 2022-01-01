@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import { fetchCurrentUsersProfile } from "../services/profile";
-import { LeftPanel, ProfileOverviewSection } from "./ProfileOverviewSection"
+import { LeftPanel } from "./ProfileOverviewSection"
+import { getAuthenticatedUserFromStorage } from "../services/core";
 import "./Dashboard.css"
 
 function HeaderSection(props) {
@@ -33,19 +34,19 @@ function HeaderLink(props) {
 function LogoutButton(props) {
 
     return (
-        <span className="flex-grow-1 align-self-baseline d-flex justify-content-end align-items-center"><button
+        <span id='logout-button' className="flex-grow-1 align-self-baseline d-flex justify-content-end align-items-center"><button
             className="btn btn-danger" onClick={props.handleLogout}>Logout</button></span>
     )
 
 }
 function DashBoard(props) {
-    const { profile, updateProfile } = props;
+    const { profile, updateProfile, userInformation } = props;
 
     return (
         <main>
             <div className="container">
                 <div className="row">
-                    <LeftPanel profile={profile} updateProfile={updateProfile} />
+                    <LeftPanel profile={profile} updateProfile={updateProfile} userInformation={userInformation} />
                     {props.children}
                 </div>
             </div>
@@ -55,6 +56,7 @@ function DashBoard(props) {
 
 export default function MainPage(props) {
     const [profile, updateProfile] = useState(null);
+    const [userInformation, updateUserInformation] = useState(null);
     const navigate = useNavigate();
 
 
@@ -69,8 +71,9 @@ export default function MainPage(props) {
         }
         if (!profile) {
             getCurrentUsersProfile()
-
         }
+        updateUserInformation(getAuthenticatedUserFromStorage())
+
     }, [])
 
     return (
@@ -82,7 +85,7 @@ export default function MainPage(props) {
                 <LogoutButton handleLogout={props.handleLogout} />
             </HeaderSection>
             {profile &&
-                <DashBoard profile={profile} updateProfile={updateProfile}>
+                <DashBoard profile={profile} updateProfile={updateProfile} userInformation={userInformation}>
                     <Outlet />
                 </DashBoard>
             }

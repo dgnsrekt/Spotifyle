@@ -2,16 +2,15 @@ import { useEffect, useState } from "react"
 import { fetchCurrentUsersGameStats } from "../services/play";
 import { fetchGamesCurrentUserPublished } from "../services/game";
 import { updateCurrentUsersProfile } from "../services/profile";
+import { IMAGE_PREFIX_URL } from "../common";
 import './Dashboard.css'
 
 
 
 export function LeftPanel(props) {
+    const { profile, updateProfile, userInformation } = props;
     const [editMode, setEditMode] = useState(false);
-    const { profile, updateProfile } = props;
     const [formData, updateFormData] = useState(profile)
-
-    const imagePrefix = "https://i.scdn.co";
 
     function handleFormSubmit(event) {
         event.preventDefault()
@@ -33,7 +32,7 @@ export function LeftPanel(props) {
     return (
         <div id="left-panel" className="col-3 p-0">
             <div className="container p-2 position-relative">
-                <img src={imagePrefix + profile.image} alt="icon"
+                <img src={IMAGE_PREFIX_URL + profile.image} alt="icon"
                     id="profile-image"
                     className="border rounded-circle border-3 bg-dark bg-opacity-100" />
             </div>
@@ -42,6 +41,7 @@ export function LeftPanel(props) {
 
                     <div className="container p-2">
                         <div className="h3 bold">{profile.display_name}</div>
+                        <div className="h6 bold">{userInformation.username}</div>
                         <div className="h6 bold">{profile.occupation}</div>
                         <div className="h6 bold">{profile.country}</div>
                         <div className="h6 bold">{profile.twitter}</div>
@@ -51,6 +51,7 @@ export function LeftPanel(props) {
                     :
                     <div className="container p-2">
                         <div className="h3 bold">{profile.display_name}</div>
+                        <div className="h6 bold">{userInformation.username}</div>
                         <div className="h6 bold">{profile.occupation}</div>
                         <div className="h6 bold">{profile.country}</div>
 
@@ -96,12 +97,17 @@ function SingleGameStat(props) {
 
 function GameProfileStats(props) {
     const { playerStats } = props;
+    const { points, available_stars: stars } = playerStats;
+
+    if (!playerStats) {
+        return null
+    }
 
     return (
         <div className="row mt-4" id="card-stats">
-            <SingleGameStat name={"Rank"} stat={1} image={"https://img.icons8.com/ios-filled/50/000000/crystal.png"} />
-            <SingleGameStat name={"Score"} stat={playerStats.points} image={"https://img.icons8.com/ios-filled/50/000000/sword.png"} />
-            <SingleGameStat name={"Stars"} stat={playerStats.avaliable_stars} image={"https://img.icons8.com/ios-filled/50/000000/pixel-star.png"} />
+            <SingleGameStat name={"Rank"} stat={1} image={"https://img.icons8.com/ios-filled/40/1e1e1e/crystal.png"} />
+            <SingleGameStat name={"Score"} stat={points} image={"https://img.icons8.com/ios-filled/40/1e1e1e/sword.png"} />
+            <SingleGameStat name={"Stars"} stat={stars} image={"https://img.icons8.com/ios-filled/40/1e1e1e/pixel-star.png"} />
         </div>
 
     )
@@ -153,7 +159,9 @@ export function ProfileOverviewSection() {
     useEffect(() => {
         const getGamesUserPublished = async () => {
             const gameList = await fetchGamesCurrentUserPublished()
-            updatePublishedGamesList(gameList)
+            if (gameList) {
+                updatePublishedGamesList(gameList)
+            }
         }
         getGamesUserPublished()
     }, [])
@@ -161,7 +169,9 @@ export function ProfileOverviewSection() {
     useEffect(() => {
         const getPlayerStats = async () => {
             const stats = await fetchCurrentUsersGameStats()
-            updatePlayerStats(stats)
+            if (stats) {
+                updatePlayerStats(stats)
+            }
         }
         getPlayerStats()
     }, [])
