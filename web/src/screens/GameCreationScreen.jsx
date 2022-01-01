@@ -19,9 +19,7 @@ export function CreateGameScreen() {
             }
 
         }
-
         const { status } = pendingGame;
-
 
         if (status !== "SUCCESS") {
             setTimeout(() => { getBuildStatus() }, 1000)
@@ -39,19 +37,19 @@ export function CreateGameScreen() {
 
     return (
         <div id="game-creation-screen" className='d-flex flex-column justify-content-center align-items-center gap-5'>
-            <h1 className='display-1 text-color-change'>
-                Creating Game
-            </h1>
             {
-                pendingGame &&
+                pendingGame.status !== "SUCCESS" &&
                 <>
-                    <h2 className="text-color-change">
-                        Status: {pendingGame.status}
+                    <h1 className='display-1 text-color-change-one'>
+                        Creating Game
+                    </h1>
+                    <h2 className="text-color-change-one">
+                        {pendingGame.status}
                     </h2>
                     {
                         pendingGame.result && pendingGame.result.current > 0 &&
                         <>
-                            <h2 className="text-color-change">
+                            <h2 className="text-color-change-one">
                                 {pendingGame.result.current - 1} out of {pendingGame.result.total} complete.
                             </h2>
                         </>
@@ -60,7 +58,7 @@ export function CreateGameScreen() {
             }
             {
                 pendingGame.status === "SUCCESS" &&
-                <button onClick={startGame} className='btn btn-success btn-lg vibrate'>Play Game</button>
+                <button onClick={startGame} className='play-button vibrate text-color-change-one'>PLAY</button>
             }
 
         </div >

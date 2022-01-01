@@ -1,0 +1,89 @@
+.puzzle-three-choice-widget {
+    display: flex;
+    flex-direction: column;
+    /* padding: 10px; */
+    /* border-radius: 8px; */
+    /* margin: 10px; */
+    max-width: 220px;
+    max-height: 220px;
+}
+
+/* @import url('https://css.gg/alarm.css'); */
+
+.selected-cover::after {
+    /* content: "LOCKED IN"; */
+    /* content: "+"; */
+    content: "✅ LOCKED IN";
+    /* content: "🗸"; */
+    font-weight: bold;
+    font-size: large;
+    align-self: center;
+    position: relative;
+    top: 24px;
+    max-height: 0px;
+}
+
+.selected-cover {
+    box-shadow: rgba(0, 0, 0, 0.65) 0px 22px 70px 4px;
+}
+
+.puzzle-three-choice-widget img {
+    height: 100%;
+    width: auto;
+    transition: 0.3;
+    box-shadow: rgba(0, 0, 0, 0.55) 0px 22px 70px 4px;
+}
+
+.puzzle-three-choice-widget img:hover {
+    box-shadow: rgba(0, 0, 0, 0.65) 0px 22px 70px 4px;
+}
+
+.puzzle-three-choice-widget a {
+    height: 100%;
+    width: 100%;
+
+}
+
+#puzzle-three-container {
+    width: 70vw;
+    display: flex;
+    justify-content: space-around;
+}
+
+#puzzle-three-container h2 {
+    font-weight: bold;
+    font-size: xxx-large;
+}
+
+.puzzle-three-submit-button {
+    background-color: transparent;
+    border-color: white;
+    border-radius: 20px;
+    /* border-width: 4px; */
+    /* border-style: solid; */
+    border-style: none;
+    color: white;
+    /* padding: 16px 32px; */
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-size: x-large;
+}
+
+
+.puzzle-three-next-button {
+    background-color: transparent;
+    border-color: white;
+    border-radius: 20px;
+    /* border-width: 4px; */
+    /* border-style: solid; */
+    border-style: none;
+    color: white;
+    /* padding: 16px 32px; */
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-size: xxx-large;
+}

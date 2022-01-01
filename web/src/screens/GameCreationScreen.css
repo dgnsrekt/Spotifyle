@@ -1,5 +1,48 @@
-#game-creation-screen{
+#game-creation-screen {
     height: 100vh;
     width: 100vw;
 
+}
+
+.play-button {
+    background: transparent;
+    border-radius: 20px;
+    border-width: 10px;
+    border-style: solid;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-size: xxx-large;
+}
+
+
+.play-button {
+    -webkit-animation: text-color-change 5s linear infinite alternate both;
+    animation: text-color-change 5s linear infinite alternate both;
+}
+
+@-webkit-keyframes text-color-change {
+    0% {
+        color: #19dcea;
+        border-color: #19dcea
+    }
+
+    100% {
+        color: #b22cf1;
+        border-color: #b22cf1;
+    }
+}
+
+@keyframes text-color-change {
+    0% {
+        color: #19dcea;
+        border-color: #19dcea;
+    }
+
+    100% {
+        color: #b22cf1;
+        border-color: #b22cf1;
+    }
 }
