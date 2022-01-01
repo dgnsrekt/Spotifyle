@@ -4,6 +4,8 @@ from django.shortcuts import get_list_or_404, get_object_or_404
 from ninja import Router
 
 from game_api import models as game_models
+from profile_api import models as profile_models
+from profile_api import schemas as profile_schemas
 
 from . import models, schemas
 
@@ -20,6 +22,7 @@ router = Router()
 # player consume single star POST /play/star -> star count
 # |- if player has 0 star return 400 code or unable code
 # |- let players skip questions with stars
+import random
 
 
 @router.get("", response=schemas.ActiveGame)
@@ -28,19 +31,41 @@ def get_game_by_gamecode(request, game_code: str, player_id: int):
     player = get_object_or_404(User, id=player_id)
 
     scoreboard, created_scoreboard = models.ScoreBoard.objects.get_or_create(
-        game=game, player=player, score=0
+        game=game, player=player, defaults={"score": 0}
     )
 
-    if not created_scoreboard:
-        return HttpResponseBadRequest("Player has already attempted this game.")
+    # if not created_scoreboard:
+    # return HttpResponseBadRequest("Player has already attempted this game.")
+    # TODO: REPLACE THIS IS FOR DEBUGGIN ONLY
+
+    def split_choices(choices):
+        half = len(choices) // 2
+        return choices[:half], choices[half:]
 
     stages = []
     stages_orm = get_list_or_404(game.stage_set)
 
     for stage in stages_orm:
         choices = []
-        for choice in stage.choice_set.all():
-            choices.append(schemas.ChoiceOut.from_orm(choice))
+        if stage.puzzle_type in [1, 2]:
+            for choice in stage.choice_set.all():
+                choices.append(schemas.ChoiceOut.from_orm(choice))
+            random.shuffle(choices)
+            # TODO: NOTE: HACK: Should be able to shuffle here.
+        else:
+            # TODO: FIXME: HACK: super hacky. Need to fix a bug on the puzzle three creation
+            # NOTE: Need to check if two assets have the same image before
+            # creating stage three assets.
+            # Songs maybe different with the same album art.
+
+            for front, back in zip(*split_choices(list(stage.choice_set.all()))):
+                choice_out = schemas.ChoiceOut.from_orm(front)
+
+                if front.correct is False:
+                    # swap the images on the wrong answers.
+                    choice_out.spotify_asset.image = back.spotify_asset.image
+
+                choices.append(choice_out)
 
         stages.append(
             schemas.StageOut(
@@ -58,7 +83,10 @@ from typing import List, Union
 @router.get("/profile", response=schemas.PlayerProfile)
 def get_players_profile(request, player_id: int):
     player_profile = get_object_or_404(models.PlayerProfile, player_id=player_id)
-    return schemas.PlayerProfile.from_player_profile_orm(player_profile=player_profile)
+    profile = get_object_or_404(profile_models.Profile, user_id=player_id)
+    output = schemas.PlayerProfile.from_player_profile_orm(player_profile=player_profile)
+    output.profile = profile_schemas.Profile.from_orm(profile)
+    return output
 
 
 @router.post("/answer")
@@ -72,6 +100,7 @@ def submit_players_answer(request, player_id: int, choice_id: int, wager: int):
     score_board = get_object_or_404(
         models.ScoreBoard, game_id=players_choice.stage.game_id, player_id=player_id
     )
+
     player_profile = get_object_or_404(models.PlayerProfile, player_id=player_id)
 
     # TODO: the frontend should check if the players has points to wager
@@ -82,9 +111,11 @@ def submit_players_answer(request, player_id: int, choice_id: int, wager: int):
 
         if answered_correct:
             score_board.score += wager
+            player_profile.update_gainers_and_losers(wager)
             # TODO: if bonus points add here
         else:
             score_board.score -= wager
+            player_profile.update_gainers_and_losers(-wager)
 
         score_board.save()
 
@@ -95,29 +126,48 @@ def submit_players_answer(request, player_id: int, choice_id: int, wager: int):
             player_profile=schemas.PlayerProfile.from_player_profile_orm(player_profile),
         )
 
-    else:
-        # type 3 answer
-        answered_correct = players_choice.correct
-        if answered_correct:
-            score_board.score += wager
-            # TODO: if bonus points add here
-        else:
+
+@router.post("/answer/three", response=schemas.PuzzleThreeAnswerResponse)
+def submit_players_puzzle_three_answer(
+    request, player_id: int, wager: int, choices: List[schemas.PuzzleThreePlayerAnswer]
+):
+
+    first_choice = get_object_or_404(game_models.Choice, id=choices[0].id)
+
+    score_board = get_object_or_404(
+        models.ScoreBoard, game_id=first_choice.stage.game_id, player_id=player_id
+    )
+
+    player_profile = get_object_or_404(models.PlayerProfile, player_id=player_id)
+
+    answered_correct = None
+
+    for choice in choices:
+        correct_choice = get_object_or_404(game_models.Choice, id=choice.id)
+        if correct_choice.correct != choice.answer:
+            answered_correct = False
             score_board.score -= wager
+            player_profile.update_gainers_and_losers(-wager)
+            break
 
-        score_board.save()
+    else:
+        answered_correct = True
+        score_board.score += wager
+        player_profile.update_gainers_and_losers(wager)
 
-        return schemas.AnswerResponse(
-            players_choice=players_choice,
-            answered_correct=answered_correct,
-            player_profile=schemas.PlayerProfile.from_player_profile_orm(player_profile),
-        )
+    score_board.save()
+
+    return schemas.PuzzleThreeAnswerResponse(
+        answered_correct=answered_correct,
+        player_profile=schemas.PlayerProfile.from_player_profile_orm(player_profile),
+    )
 
 
 @router.post("/star")
 def consume_one_star(request, player_id: int):
     player_profile = get_object_or_404(models.PlayerProfile, player_id=player_id)
-    if player_profile.avaliable_stars < 1:
-        return HttpResponseBadRequest("Player has no stars avaliable.")
+    if player_profile.available_stars < 1:
+        return HttpResponseBadRequest("Player has no stars available.")
 
     player_profile.consume_star()
 
