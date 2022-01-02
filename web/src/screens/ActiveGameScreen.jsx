@@ -1,14 +1,15 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import "./ActiveGameScreen.css"
 import "../animations/gradient.css"
 import "../animations/entrances.css"
 import "../animations/exit.css"
 import { shuffleArray, cycle } from "../animations/helpers"
 import { fetchCurrentUsersGameStats, fetchGameData, consumeStar } from "../services/play"
-import { IMAGE_PREFIX_URL, PREVIEW_PREFIX_URL } from "../common"
+import { IMAGE_PREFIX_URL } from "../common"
 
 import { PuzzleOneQuestionWidget, PuzzleOneContainer } from "./PuzzleOne";
+import { PuzzleTwoQuestionWidget, PuzzleTwoContainer } from "./PuzzleTwo";
 import { PuzzleThreeQuestionWidget, PuzzleThreeContainer } from "./PuzzleThree";
 
 function GameHeader(props) {
@@ -35,10 +36,12 @@ function GameStageSection(props) {
     if (puzzleType === 2) {
         return (
             <div id="game-stage-section">
-                <button onClick={changeStage} className="puzzle-three-submit-button">Next</button>
-            </div >
+                <PuzzleTwoQuestionWidget question={question} />
+                <PuzzleTwoContainer changeStage={changeStage} choices={choices} playerData={playerData} updatePlayerData={updatePlayerData} wager={wager} />
+            </div>
         )
     }
+
 
     if (puzzleType === 3) {
         return (
@@ -176,6 +179,29 @@ function Avatar(props) {
     )
 }
 
+function ErrorPage(props) {
+    const navigate = useNavigate();
+    const { message, gameCode } = props;
+
+    useEffect(() => {
+        sessionStorage.removeItem(gameCode)
+    }, [])
+
+    function goHome() {
+        console.log("/dashboard")
+        navigate("/dashboard")
+    }
+
+    return (
+        <div className="error-page text-color-change-one">
+            <h1>Error Page</h1>
+            <h2>{message}</h2>
+            <button onClick={goHome} className="exit-error-button">Back to dashboard</button>
+        </div>
+
+    )
+}
+
 
 function GameDisplay(props) {
     const { gameCode, background, getRandomBackGroundColor } = props;
@@ -184,6 +210,8 @@ function GameDisplay(props) {
 
     const [stageArray, updateStageArray] = useState(null);
     const [currentStage, updateCurrentStage] = useState(null);
+
+    const [errorMessage, updateError] = useState(null);
 
     const navigate = useNavigate();
 
@@ -196,6 +224,7 @@ function GameDisplay(props) {
             const storedIndex = parseInt(sessionStorage.getItem(gameCode))
             sessionStorage.setItem(gameCode, storedIndex + 1)
             getRandomBackGroundColor()
+
         } else {
             sessionStorage.removeItem(gameCode)
             navigate("/dashboard")
@@ -208,31 +237,35 @@ function GameDisplay(props) {
         }
     }
 
-
     useEffect(() => {
         const getGameData = async () => {
-            const response = await fetchGameData(gameCode);
-            if (response) {
-                // set a game position in session storage
-                // you can slice to the current game position
-                // updateCurrentStage(response.stages)
-                // store gameID as key
-                // sotre lastIndex as value
-                // get a stage slice array.slice(lastIndex)
+            try {
+                const response = await fetchGameData(gameCode);
 
-                const storedIndex = sessionStorage.getItem(gameCode)
+                if (response) {
+                    // set a game position in session storage
+                    // you can slice to the current game position
+                    // updateCurrentStage(response.stages)
+                    // store gameID as key
+                    // sotre lastIndex as value
+                    // get a stage slice array.slice(lastIndex)
 
-                if (!storedIndex) {
-                    const stageSlice = response.stages.slice()
-                    updateCurrentStage(stageSlice.shift())
-                    updateStageArray(stageGenerator(stageSlice))
-                    sessionStorage.setItem(gameCode, 0)
-                    //TODO: setItem when progressing forward
-                } else {
-                    const stageSlice = response.stages.slice(storedIndex)
-                    updateCurrentStage(stageSlice.shift())
-                    updateStageArray(stageGenerator(stageSlice))
+                    const storedIndex = sessionStorage.getItem(gameCode)
+
+                    if (!storedIndex) {
+                        const stageSlice = response.stages.slice()
+                        updateCurrentStage(stageSlice.shift())
+                        updateStageArray(stageGenerator(stageSlice))
+                        sessionStorage.setItem(gameCode, 0)
+                        //TODO: setItem when progressing forward
+                    } else {
+                        const stageSlice = response.stages.slice(storedIndex)
+                        updateCurrentStage(stageSlice.shift())
+                        updateStageArray(stageGenerator(stageSlice))
+                    }
                 }
+            } catch (error) {
+                updateError(error.message)
             }
         }
 
@@ -240,10 +273,7 @@ function GameDisplay(props) {
             getGameData()
         }
 
-
-
-
-    }, [currentStage])
+    }, [])
 
     useEffect(() => {
         const getPlayerData = async () => {
@@ -255,14 +285,14 @@ function GameDisplay(props) {
         getPlayerData()
     }, [])
 
+    if (errorMessage) {
+        return <ErrorPage message={errorMessage} gameCode={gameCode} />
+    }
+
     if (!playerData || !currentStage) {
         return null
     }
 
-    // if (stageArray) {
-    //     console.log(currentStage)
-    //     console.log(stageArray.next().value)
-    // }
 
     return (
         <div id="game-display" className={background}>
@@ -279,7 +309,6 @@ function GameDisplay(props) {
         </div>
     )
 }
-
 
 export function ActiveGame() {
     const params = useParams();

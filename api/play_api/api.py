@@ -23,6 +23,7 @@ router = Router()
 # |- if player has 0 star return 400 code or unable code
 # |- let players skip questions with stars
 import random
+from pprint import pprint
 
 
 @router.get("", response=schemas.ActiveGame)
@@ -34,8 +35,8 @@ def get_game_by_gamecode(request, game_code: str, player_id: int):
         game=game, player=player, defaults={"score": 0}
     )
 
-    # if not created_scoreboard:
-    # return HttpResponseBadRequest("Player has already attempted this game.")
+    if not created_scoreboard:
+        return HttpResponseBadRequest("Player has already attempted this game.")
     # TODO: REPLACE THIS IS FOR DEBUGGIN ONLY
 
     def split_choices(choices):
@@ -47,12 +48,26 @@ def get_game_by_gamecode(request, game_code: str, player_id: int):
 
     for stage in stages_orm:
         choices = []
-        if stage.puzzle_type in [1, 2]:
+        if stage.puzzle_type == 1:
             for choice in stage.choice_set.all():
                 choices.append(schemas.ChoiceOut.from_orm(choice))
             random.shuffle(choices)
-            # TODO: NOTE: HACK: Should be able to shuffle here.
-        else:
+
+        elif stage.puzzle_type == 2:
+            for choice in stage.choice_set.all():
+                choices.append(schemas.ChoiceOut.from_orm(choice))
+
+            # NOTE: Used to make sure all the assets have the same preview.
+            # This is to make sure no one can find the correct choice
+            # by snooping in on the mp3 id.
+            correct = list(filter(lambda item: item.correct == True, choices))
+            assert len(correct) == 1
+            target_preview = correct.pop().spotify_asset.preview
+            for choice in choices:
+                choice.spotify_asset.preview = target_preview
+
+            # random.shuffle(choices)
+        elif stage.puzzle_type == 3:
             # TODO: FIXME: HACK: super hacky. Need to fix a bug on the puzzle three creation
             # NOTE: Need to check if two assets have the same image before
             # creating stage three assets.

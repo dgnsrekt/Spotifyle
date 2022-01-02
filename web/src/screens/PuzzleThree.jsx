@@ -8,7 +8,7 @@ export function PuzzleThreeQuestionWidget(props) {
 
     return (
         <>
-            <blockquote id="puzzle-one-question" className="roll-in-blurred-left">
+            <blockquote className="roll-in-blurred-left">
                 <h1>{question}</h1>
                 <h4>Scroll over the art to play the song.</h4>
                 <h4>Lock in the art that matches the track.</h4>

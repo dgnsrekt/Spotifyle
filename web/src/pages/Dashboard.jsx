@@ -65,8 +65,8 @@ export default function MainPage(props) {
             const profileData = await fetchCurrentUsersProfile();
             if (!profileData) {
                 navigate("/")
+                sessionStorage.clear()
             }
-            console.log(profileData)
             updateProfile(profileData)
         }
         if (!profile) {

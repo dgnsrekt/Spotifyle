@@ -15,13 +15,15 @@ export async function fetchGamesCurrentUserPublished(limit = 5) {
         const response = await instance.get(url)
         return response.data
     } catch (error) {
-        console.error(error)
+        if (error.response.status === 404) {
+            console.warn(error.response.data)
+        }
         return null
     }
 
 }
 
-export async function createNewGame(maxStages = 10) {
+export async function createNewGame(maxStages = 5) {
     const user = getAuthenticatedUserFromStorage()
     const params = { publisher_id: user.id, max_stages: maxStages }
     const url = urlcat(BASE_API_URL, "game", params);

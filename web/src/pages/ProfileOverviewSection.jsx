@@ -158,9 +158,9 @@ export function ProfileOverviewSection() {
 
     useEffect(() => {
         const getGamesUserPublished = async () => {
-            const gameList = await fetchGamesCurrentUserPublished()
-            if (gameList) {
-                updatePublishedGamesList(gameList)
+            const response = await fetchGamesCurrentUserPublished()
+            if (response) {
+                updatePublishedGamesList(response)
             }
         }
         getGamesUserPublished()

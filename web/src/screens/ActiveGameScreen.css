@@ -60,92 +60,6 @@
     box-shadow: rgba(0, 0, 0, 0.40) 0px 22px 70px 4px;
 }
 
-#puzzle-one-question {
-    margin: 0;
-    max-height: 100%;
-}
-
-#puzzle-one-question p {
-    text-overflow: ellipsis-word;
-    overflow: hidden;
-    max-width: 70vw;
-    max-height: 30vh;
-    font-weight: bold;
-    font-size: clamp(1rem, 50% + 1.5rem, 2rem);
-}
-
-#puzzle-one-question p::before {
-    content: '\201C';
-    color: black;
-}
-
-#puzzle-one-question p::after {
-    content: '\201D';
-    color: black;
-}
-
-#puzzle-one-container {
-    display: flex;
-    justify-content: space-evenly;
-    min-width: 65vw;
-}
-
-.puzzle-one-choice-widget {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.puzzle-one-choice-widget img {
-    width: 150px;
-    height: 150px;
-    margin: 5px;
-    margin-bottom: 25px;
-
-    object-fit: cover;
-    border-radius: 50%;
-    border-width: 5px;
-    border-style: solid;
-    box-shadow: rgba(0, 0, 0, 0.55) 0px 22px 70px 4px;
-}
-
-.puzzle-one-choice-card {
-    background: #1A1A1A;
-    padding: 20px;
-    margin-inline: min(25px, 5vw);
-    border-radius: 8px;
-    box-shadow: rgba(0, 0, 0, 0.55) 0px 22px 70px 4px;
-    width: 10vw;
-}
-
-
-.puzzle-one-choice-card p {
-    font-weight: bold;
-    word-break: break-word;
-    max-width: 100%;
-}
-
-.puzzle-one-choice-card:hover {
-    background: #2A2A2A;
-    cursor: pointer;
-    box-shadow: rgba(0, 0, 0, 0.65) 0px 22px 70px 4px;
-}
-
-.puzzle-one-choice-card:active {
-    transform: translateY(-5%) !important;
-}
-
-.puzzle-one-answer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.puzzle-one-answer h1 {
-    position: relative;
-    bottom: 4px;
-}
-
 /* Target any element with the `data-tooltip` and `aria-description` attributes */
 [data-tooltip][aria-description]::before {
     content: attr(aria-description);
@@ -226,4 +140,60 @@
 
 #avatar-details p:first-child {
     font-size: x-large;
+}
+
+.error-page {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.error-page * {
+    margin: 50px;
+}
+
+.exit-error-button {
+    background: transparent;
+    border-radius: 20px;
+    border-width: 10px;
+    border-style: solid;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    font-size: large;
+}
+
+
+.exit-error-button {
+    -webkit-animation: text-color-change 5s linear infinite alternate both;
+    animation: text-color-change 5s linear infinite alternate both;
+}
+
+@-webkit-keyframes text-color-change {
+    0% {
+        color: #19dcea;
+        border-color: #19dcea
+    }
+
+    100% {
+        color: #b22cf1;
+        border-color: #b22cf1;
+    }
+}
+
+@keyframes text-color-change {
+    0% {
+        color: #19dcea;
+        border-color: #19dcea;
+    }
+
+    100% {
+        color: #b22cf1;
+        border-color: #b22cf1;
+    }
 }

@@ -33,8 +33,7 @@ export async function fetchGameData(gameCode) {
         const response = await instance.get(url)
         return response.data
     } catch (error) {
-        console.error(error)
-        return null
+        throw new Error(error.response.data)
     }
 }
 

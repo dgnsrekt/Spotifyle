@@ -22,7 +22,6 @@ function CallBack(props) {
 
     const getStoreToken = async () => {
       const token = await fetchJsonWebToken(code, state);
-      console.log(token)
       if (token.user) {
         setIsLoggedIn(true)
         sessionStorage.auth = JSON.stringify(token.jwt)

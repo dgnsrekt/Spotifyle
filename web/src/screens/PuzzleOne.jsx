@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { submitAnswer } from "../services/play"
 import { IMAGE_PREFIX_URL } from "../common"
+import './PuzzleOne.css'
 
 export function PuzzleOneQuestionWidget(props) {
     const { question } = props;
@@ -20,7 +21,9 @@ function PuzzleOneChoiceWidget(props) {
     const { choice, handleOnClick } = props;
 
     return (
-        <div onClick={() => handleOnClick(choice.id)} className="puzzle-one-choice-card roll-in-blurred-left">
+        <div onClick={() => handleOnClick(choice.id)}
+            className="puzzle-one-choice-card roll-in-blurred-left"
+        >
             <div className="puzzle-one-choice-widget">
                 <img src={IMAGE_PREFIX_URL + choice.spotify_asset.image} alt="choice" />
                 <p>{choice.spotify_asset.name}</p>
@@ -49,7 +52,6 @@ export function PuzzleOneContainer(props) {
                 available_stars,
                 points
             })
-            console.log(response)
 
             updateCorrectChoice(response.correct_choice)
             updatePlayerAnsweredCorrect(response.answered_correct)
