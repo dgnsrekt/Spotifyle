@@ -37,7 +37,7 @@ function GameStageSection(props) {
         return (
             <div id="game-stage-section">
                 <PuzzleTwoQuestionWidget question={question} />
-                <PuzzleTwoContainer changeStage={changeStage} choices={choices} playerData={playerData} updatePlayerData={updatePlayerData} wager={wager} />
+                <PuzzleTwoContainer changeStage={changeStage} currentStage={currentStage} choices={choices} playerData={playerData} updatePlayerData={updatePlayerData} wager={wager} />
             </div>
         )
     }
@@ -110,7 +110,6 @@ function GameControlsFooter(props) {
                 points
             })
 
-            console.log(response)
         }
 
         handleConsumeStar()

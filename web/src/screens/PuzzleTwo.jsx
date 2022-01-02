@@ -16,7 +16,7 @@ export function PuzzleTwoQuestionWidget(props) {
     )
 }
 
-export function TrackArtWidget(props) {
+function TrackArtWidget(props) {
     const { id } = props.item;
     const { name, spotify_uri, spotify_type, image, preview } = props.item.spotify_asset;
 
@@ -35,31 +35,98 @@ export function TrackArtWidget(props) {
         </div>
     )
 }
-export function PuzzleTwoContainer(props) {
-    const { choices, changeStage, updatePlayerData, playerData, wager } = props;
-    const [isPlaying, setIsPlaying] = useState(false)
+
+function StartButton(props) {
     const [buttonText, setButtonText] = useState("Ready")
+
+    return (
+        <button className="start-button"
+            onClick={props.handleClick}
+            onMouseOver={() => setButtonText("Go!")}
+            onMouseLeave={() => setButtonText("Ready")}
+        >{buttonText}
+        </button>
+    )
+
+}
+
+function AudioPlayer(props) {
+    const { preview, setStageStarted, showButton, currentStage } = props;
+
+    const [isPlaying, setIsPlaying] = useState(false)
+
+    const source = PREVIEW_PREFIX_URL + preview;
+
     const audioRef = useRef();
+    const isReadyRef = useRef(false);
+
+    useEffect(() => {
+
+        if (audioRef.current && audioRef !== undefined) {
+
+            if (isPlaying) {
+                audioRef.current.play()
+                console.log("playing")
+            } else {
+                audioRef.current.pause()
+                console.log("pausing")
+            }
+
+        }
+        return () => {
+            console.log("cleaning up")
+            if (audioRef.current) {
+                audioRef.current.pause();
+            }
+            if (isPlaying) {
+                setIsPlaying(false)
+            }
+
+        }
+
+    }, [isPlaying, currentStage])
+
+    function startPlaying() {
+        setIsPlaying(!isPlaying)
+        setStageStarted(true)
+        console.log(isPlaying)
+
+    }
+
+    return (
+        <>
+            {!showButton ?
+                <audio id="music-player" loop ref={audioRef}>
+                    <source src={source} />
+                </audio>
+                :
+                <StartButton handleClick={startPlaying} />
+            }
+
+        </>
+    )
+}
+
+export function PuzzleTwoContainer(props) {
+    const { choices, changeStage, currentStage, updatePlayerData, playerData, wager } = props;
+    const [song, setSong] = useState(null)
 
     const [playerAnsweredCorrect, updatePlayerAnsweredCorrect] = useState(null);
     const [correctChoice, updateCorrectChoice] = useState(null);
 
+    const [stageStarted, setStageStarted] = useState(false)
 
     useEffect(() => {
+        setSong(choices[0].spotify_asset.preview)
+        setStageStarted(false)
+
         return () => {
-            if (audioRef == null) {
-                return
-            }
-            if (!audioRef.current.paused) {
-                audioRef.current.pause()
-                updatePlayerAnsweredCorrect(null)
-            }
-        };
-    }, []);
+            updatePlayerAnsweredCorrect(null)
+            setSong(null)
+            setStageStarted(false)
+        }
+    }, [choices, currentStage])
 
-    useEffect(() => {
-        updatePlayerAnsweredCorrect(null)
-    }, [choices])
 
     function handleCheckAnswer(answerId) {
         const sendAnswer = async () => {
@@ -76,43 +143,20 @@ export function PuzzleTwoContainer(props) {
             updateCorrectChoice(response.correct_choice)
             updatePlayerAnsweredCorrect(response.answered_correct)
         }
-        //TODO: go to next sage
-        if (!audioRef.current.paused) {
-            sendAnswer()
-            setIsPlaying(audioRef.current.paused)
-        }
-    }
-
-    function handleClick(event) {
-        if (audioRef.current.paused) {
-            audioRef.current.play()
-            setIsPlaying(!audioRef.current.paused)
-        }
+        sendAnswer()
     }
 
     if (playerAnsweredCorrect === null) {
         return (
             <div className="p2-container">
-                <audio id="music-player" loop ref={audioRef}>
-                    <source src={PREVIEW_PREFIX_URL + choices[0].spotify_asset.preview} />
-                </audio>
-
-                {
-                    isPlaying ?
-                        <>
-                            {choices.map((item, index) => <TrackArtWidget handleCheckAnswer={handleCheckAnswer} key={item.id} item={item} />)}
-                        </>
-                        :
-                        <button className="start-button"
-                            onClick={handleClick}
-                            onMouseOver={() => setButtonText("Go!")}
-                            onMouseLeave={() => setButtonText("Ready")}
-                        >{buttonText}</button>
+                <AudioPlayer currentStage={currentStage} preview={song} showButton={!stageStarted} setStageStarted={setStageStarted} />
+                {stageStarted &&
+                    <>
+                        {choices.map((item, index) => <TrackArtWidget handleCheckAnswer={handleCheckAnswer} key={item.id} item={item} />)}
+                    </>
                 }
-
             </div>
         )
-
     }
 
     if (playerAnsweredCorrect === true) {
