@@ -7,6 +7,7 @@ from faker import Faker
 from faker_music import MusicProvider
 from ninja import Schema
 
+import copy
 from assets import models as asset_models
 
 from . import models, trivia
@@ -126,6 +127,7 @@ def stage_two_processor(*, publisher_id: int, max_stages: int, choice_size: int 
     stages = []
     for _ in range(max_stages):
         choice_set = random.sample(data, k=choice_size)
+        choice_set = copy.deepcopy(choice_set)
         index = random.randint(0, choice_size - 1)
         choice_set[index].correct = True
         stage = Stage(question="Find the track.", puzzle_type=2, choices=choice_set)
@@ -143,6 +145,7 @@ def stage_three_processor(*, publisher_id: int, max_stages: int):
     stages = []
     for _ in range(max_stages):
         choice_set = random.sample(data, k=8)
+        choice_set = copy.deepcopy(choice_set)
         choice_map = random.choices([True, False], k=4)
         choice_matrix = choice_map + choice_map
 
