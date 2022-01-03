@@ -183,12 +183,11 @@ function ErrorPage(props) {
     const { message, gameCode } = props;
 
     useEffect(() => {
-        sessionStorage.removeItem(gameCode)
+        localStorage.removeItem(gameCode)
     }, [])
 
     function goHome() {
-        console.log("/dashboard")
-        navigate("/dashboard")
+        navigate(`/?gameCode=${gameCode}`)
     }
 
     return (
@@ -220,12 +219,12 @@ function GameDisplay(props) {
             updateCurrentStage(nextStage.value)
             updateStageArray(stageArray)
 
-            const storedIndex = parseInt(sessionStorage.getItem(gameCode))
-            sessionStorage.setItem(gameCode, storedIndex + 1)
+            const storedIndex = parseInt(localStorage.getItem(gameCode))
+            localStorage.setItem(gameCode, storedIndex + 1)
             getRandomBackGroundColor()
 
         } else {
-            sessionStorage.removeItem(gameCode)
+            localStorage.removeItem(gameCode)
             navigate("/dashboard")
         }
     }
@@ -249,13 +248,13 @@ function GameDisplay(props) {
                     // sotre lastIndex as value
                     // get a stage slice array.slice(lastIndex)
 
-                    const storedIndex = sessionStorage.getItem(gameCode)
+                    const storedIndex = localStorage.getItem(gameCode)
 
                     if (!storedIndex) {
                         const stageSlice = response.stages.slice()
                         updateCurrentStage(stageSlice.shift())
                         updateStageArray(stageGenerator(stageSlice))
-                        sessionStorage.setItem(gameCode, 0)
+                        localStorage.setItem(gameCode, 0)
                         //TODO: setItem when progressing forward
                     } else {
                         const stageSlice = response.stages.slice(storedIndex)

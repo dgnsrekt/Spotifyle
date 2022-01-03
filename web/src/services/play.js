@@ -4,6 +4,9 @@ import axios from 'axios';
 
 export async function fetchCurrentUsersGameStats() {
     const user = getAuthenticatedUserFromStorage()
+    if (!user) {
+        return null
+    }
     const params = { player_id: user.id }
     const url = urlcat(BASE_API_URL, "play/profile", params);
 

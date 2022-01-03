@@ -15,7 +15,6 @@ export function CreateGameScreen() {
             const status = await checkGameBuildStatus(params.taskID)
             if (status) {
                 setPendingGame(status)
-                console.log(status)
             }
 
         }
@@ -28,9 +27,7 @@ export function CreateGameScreen() {
     }, [pendingGame])
 
     function startGame() {
-        console.log("starting game")
         const gameCode = pendingGame.result.game_code;
-        console.log(gameCode)
         navigate(`/play/${gameCode}`)
 
     }

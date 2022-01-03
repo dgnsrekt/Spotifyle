@@ -2,9 +2,13 @@ from typing import List, Optional
 
 from celery.result import AsyncResult
 from django.shortcuts import get_list_or_404
+from django.db.models import Q
 from ninja import Router
+from ninja.pagination import paginate, PageNumberPagination
 
 from . import models, schemas, tasks
+
+from play_api import models as play_models
 
 router = Router()
 
@@ -37,14 +41,31 @@ def check_status(request, status_id: str):
     return schemas.Status(**status._get_task_meta())
 
 
+PAGE_SIZE = 10
+
+
 @router.get("", response=List[schemas.GameResponse])
-def list_games(request):
+@paginate(PageNumberPagination, page_size=PAGE_SIZE)
+def list_games(request, **kwargs):
     return models.Game.objects.all()
 
 
-@router.get("/publisher/{publisher_id}", response=List[schemas.GameResponse])
-def list_games_by_publisher(request, publisher_id: int, limit: Optional[int] = None):
-    games = get_list_or_404(models.Game, publisher_id=publisher_id)
-    if limit:
-        return games[:limit]
-    return games
+@router.get("/published/{publisher_id}", response=List[schemas.GameResponse])
+@paginate(PageNumberPagination, page_size=PAGE_SIZE)
+def list_games_by_publisher(request, publisher_id: int, **kwargs):
+    return get_list_or_404(models.Game.objects.order_by("-id"), publisher_id=publisher_id)
+
+
+from ninja import Schema
+
+
+@router.get("/played/{player_id}", response=List[schemas.PlayedGameResponse])
+@paginate(PageNumberPagination, page_size=PAGE_SIZE)
+def list_games_played_by_player(request, player_id: int, **kwargs):
+    return get_list_or_404(models.Game.objects.order_by("-id"), scoreboard__player_id=player_id)
+
+
+@router.get("/unplayed/{player_id}", response=List[schemas.PlayedGameResponse])
+@paginate(PageNumberPagination, page_size=PAGE_SIZE)
+def list_games_player_has_not_played(request, player_id: int, **kwargs):
+    return get_list_or_404(models.Game.objects.order_by("-id"), ~Q(scoreboard__player_id=player_id))

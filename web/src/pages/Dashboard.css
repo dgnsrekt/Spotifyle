@@ -12,10 +12,18 @@ header {
     transform: translateY(-5%) !important;
 }
 
-#logout-button{
-    transform: translateY(-35%) !important;
+.button-group {
+    transform: translateY(-30%) !important;
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
 }
-#profile-image{
+
+.button-group button {
+    margin: 0 15px;
+}
+
+#profile-image {
     object-fit: cover;
     width: 260px;
     height: 260px;
@@ -28,4 +36,3 @@ a:active {
     text-decoration: none;
     color: inherit;
 }
-

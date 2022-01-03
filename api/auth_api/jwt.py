@@ -20,7 +20,7 @@ def create_access_token(
     data = verified_user.dict()
 
     if expiration is None:
-        expiration = datetime.utcnow() + timedelta(hours=1)
+        expiration = datetime.utcnow() + timedelta(hours=2)
 
     data.update({"exp": expiration})
     access_token = jwt.encode(data, JWT_SECRET, algorithm=JWT_ALGORITHM)

@@ -66,15 +66,12 @@ function AudioPlayer(props) {
 
             if (isPlaying) {
                 audioRef.current.play()
-                console.log("playing")
             } else {
                 audioRef.current.pause()
-                console.log("pausing")
             }
 
         }
         return () => {
-            console.log("cleaning up")
             if (audioRef.current) {
                 audioRef.current.pause();
             }
@@ -89,7 +86,6 @@ function AudioPlayer(props) {
     function startPlaying() {
         setIsPlaying(!isPlaying)
         setStageStarted(true)
-        console.log(isPlaying)
 
     }
 
@@ -138,7 +134,6 @@ export function PuzzleTwoContainer(props) {
                 available_stars,
                 points
             })
-            console.log(response)
 
             updateCorrectChoice(response.correct_choice)
             updatePlayerAnsweredCorrect(response.answered_correct)

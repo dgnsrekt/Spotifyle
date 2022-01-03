@@ -4,10 +4,10 @@ import axios from 'axios';
 
 export async function fetchCurrentUsersProfile() {
     const url = urlcat(BASE_API_URL, "profile/me");
-    const instance = axios.create({
-        headers: getAuthenticationHeader()
-    })
     try {
+        const instance = axios.create({
+            headers: getAuthenticationHeader()
+        })
         const response = await instance.get(url)
         return response.data
     } catch (error) {

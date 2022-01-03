@@ -1,7 +1,7 @@
 import './LoginPage.css'
 import { fetchSpotifyRedirect } from '../services/auth'
 import { useEffect, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import '../animations/text.css'
 import '../animations/vibrate.css'
 import { shuffleArray, cycle } from "../animations/helpers"
@@ -10,7 +10,10 @@ import { shuffleArray, cycle } from "../animations/helpers"
 export default function LoginPage(props) {
     const [redirectUrl, setRedirectUrl] = useState(null)
     const { isLoggedIn } = props;
+    const [search, setSearch] = useSearchParams()
     const navigate = useNavigate();
+
+    const gameCode = search.get("gameCode")
 
 
     const gradientClasses = [
@@ -34,7 +37,7 @@ export default function LoginPage(props) {
 
     useEffect(() => {
         const getSpotifyRedirect = async () => {
-            const redirect = await fetchSpotifyRedirect()
+            const redirect = await fetchSpotifyRedirect(gameCode)
             if (redirect) {
                 setRedirectUrl(redirect.url)
             }

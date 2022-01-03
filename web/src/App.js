@@ -18,16 +18,30 @@ function CallBack(props) {
   const code = search.get("code")
   const state = search.get("state")
 
+  function getGameCodeFromState(state) {
+    const decoded = decodeURI(state).split(":")
+    if (decoded.length < 2) {
+      return null
+    }
+    return decoded[1]
+  }
+
   useEffect(() => {
 
     const getStoreToken = async () => {
       const token = await fetchJsonWebToken(code, state);
       if (token.user) {
         setIsLoggedIn(true)
-        sessionStorage.auth = JSON.stringify(token.jwt)
-        sessionStorage.user = JSON.stringify(token.user)
+        localStorage.auth = JSON.stringify(token.jwt)
+        localStorage.user = JSON.stringify(token.user)
         //TODO: Add logic for getting gamecode from state and navigating;
-        navigate("/");
+
+        const gameCode = getGameCodeFromState(state)
+        if (gameCode) {
+          navigate(`/play/${gameCode}`);
+        } else {
+          navigate("/");
+        }
       }
     }
 
@@ -45,7 +59,7 @@ function App() {
   let navigate = useNavigate();
 
   function handleLogout() {
-    sessionStorage.clear()
+    localStorage.clear()
     setIsLoggedIn(false)
     navigate("/")
   }
