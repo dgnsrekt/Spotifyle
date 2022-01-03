@@ -2,7 +2,8 @@ import { useEffect, useState } from "react"
 import { fetchCurrentUsersGameStats } from "../services/play";
 import { fetchGamesCurrentUserPublished } from "../services/game";
 import { updateCurrentUsersProfile } from "../services/profile";
-import { IMAGE_PREFIX_URL } from "../common";
+import { IMAGE_PREFIX_URL, HOST_PREFIX_URL } from "../common";
+import urlcat from "urlcat";
 import './Dashboard.css'
 
 
@@ -86,8 +87,7 @@ function SingleGameStat(props) {
                 <h5 className="card-title fs-4">{props.name}</h5>
 
                 <div className="d-flex justify-content-around align-items-center">
-                    <img src={props.image} />
-                    <p className="card-text fs-2">{props.stat}</p>
+                    <p className="card-text fs-2">{props.icon} {props.stat}</p>
                 </div>
 
             </div>
@@ -105,11 +105,25 @@ function GameProfileStats(props) {
 
     return (
         <div className="row mt-4" id="card-stats">
-            <SingleGameStat name={"Rank"} stat={1} image={"https://img.icons8.com/ios-filled/40/1e1e1e/crystal.png"} />
-            <SingleGameStat name={"Score"} stat={points} image={"https://img.icons8.com/ios-filled/40/1e1e1e/sword.png"} />
-            <SingleGameStat name={"Stars"} stat={stars} image={"https://img.icons8.com/ios-filled/40/1e1e1e/pixel-star.png"} />
+            <SingleGameStat name={"Rank"} stat={1} icon={"👑"} />
+            <SingleGameStat name={"Score"} stat={points} icon={"💎"} />
+            <SingleGameStat name={"Stars"} stat={stars} icon={"⭐"} />
         </div>
 
+    )
+}
+function CopyContainer(props) {
+    const { gameCode } = props;
+    const url = urlcat(HOST_PREFIX_URL, "play/:gameCode", { gameCode: gameCode })
+
+    async function copy() {
+        await navigator.clipboard.writeText(url)
+    }
+
+    return (
+        <div>
+            <button className="btn btn-danger" onClick={copy}>Share 📋</button>
+        </div>
     )
 }
 
@@ -120,8 +134,10 @@ function GamesCreatedTable(props) {
         return (
             <tr>
                 <td colSpan="8">{props.item.name}</td>
-                <td colSpan="2">{props.item.game_code}</td>
-                <td colSpan="2">{props.item.processed ? "true" : "false"}</td>
+                <td colSpan="2">
+                    <CopyContainer gameCode={props.item.game_code} />
+                </td>
+                {/* <td colSpan="2">{props.item.processed ? "true" : "false"}</td> */}
             </tr>
         )
     }
@@ -136,8 +152,8 @@ function GamesCreatedTable(props) {
                         <thead>
                             <tr>
                                 <th scope="col" colSpan="8">Game Name</th>
-                                <th scope="col" colSpan="2">Game Code</th>
-                                <th scope="col" colSpan="2">Processed</th>
+                                <th scope="col" colSpan="2">Share Link</th>
+                                {/* <th scope="col" colSpan="2">Processed</th> */}
                             </tr>
                         </thead>
                         <tbody>

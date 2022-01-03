@@ -37,6 +37,7 @@ def get_game_by_gamecode(request, game_code: str, player_id: int):
 
     if not created_scoreboard:
         return HttpResponseBadRequest("Player has already attempted this game.")
+
     # TODO: REPLACE THIS IS FOR DEBUGGIN ONLY
 
     def split_choices(choices):
@@ -187,3 +188,26 @@ def consume_one_star(request, player_id: int):
     player_profile.consume_star()
 
     return schemas.PlayerProfile.from_player_profile_orm(player_profile=player_profile)
+
+
+from ninja import Schema
+
+
+class Player(Schema):
+    username: str
+
+
+class GameOut(Schema):
+    name: str
+    game_code: str
+
+
+class ScoreboardOut(Schema):
+    game: GameOut
+    player: Player
+    score: int
+
+
+@router.get("/scoreboard", response=List[ScoreboardOut])
+def get_scoreboard(request, game_code: str):
+    return get_list_or_404(models.ScoreBoard, game__game_code=game_code)

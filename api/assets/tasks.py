@@ -50,3 +50,6 @@ def get_users_top_data(self, *, owner_id):
             self.update_state(
                 state="UPDATING", meta={"current": index, "total": len(spotify_assets)}
             )
+
+    observer.profile.data_loaded = True
+    observer.profile.save()

@@ -21,5 +21,5 @@ def on_invalid_token(request, exc):
 
 api.add_router("/auth", auth_router, tags=["Authentication"])
 api.add_router("/profile", profile_router, auth=AuthBearer(), tags=["Profile"])
-api.add_router("/game", game_router, tags=["Game"])  # TODO: Add auth.
-api.add_router("/play", play_router, tags=["Play"])  # TODO: Add auth.
+api.add_router("/game", game_router, tags=["Game"], auth=AuthBearer())
+api.add_router("/play", play_router, tags=["Play"], auth=AuthBearer())

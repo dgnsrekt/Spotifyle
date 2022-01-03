@@ -2,10 +2,10 @@ import urlcat from 'urlcat';
 import { BASE_API_URL, getAuthenticationHeader, getAuthenticatedUserFromStorage } from './core';
 import axios from 'axios';
 
-export async function fetchGamesCurrentUserPublished(limit = 5) {
+export async function fetchGamesCurrentUserPublished() {
     const user = getAuthenticatedUserFromStorage()
-    const params = { publisher_id: user.id, limit: limit }
-    const url = urlcat(BASE_API_URL, "game/publisher/:publisher_id", params);
+    const params = { publisher_id: user.id }
+    const url = urlcat(BASE_API_URL, "game/published/:publisher_id", params);
 
     const instance = axios.create({
         headers: getAuthenticationHeader()
@@ -20,10 +20,48 @@ export async function fetchGamesCurrentUserPublished(limit = 5) {
         }
         return null
     }
+}
+export async function fetchGamesCurrentUserHasPlayed() {
+    const user = getAuthenticatedUserFromStorage()
+    const params = { player_id: user.id }
+    const url = urlcat(BASE_API_URL, "game/played/:player_id", params);
 
+    const instance = axios.create({
+        headers: getAuthenticationHeader()
+    })
+
+    try {
+        const response = await instance.get(url)
+        return response.data
+    } catch (error) {
+        if (error.response.status === 404) {
+            console.warn(error.response.data)
+        }
+        return null
+    }
 }
 
-export async function createNewGame(maxStages = 5) {
+export async function fetchGamesCurrentUserUnplayedGames() {
+    const user = getAuthenticatedUserFromStorage()
+    const params = { player_id: user.id }
+    const url = urlcat(BASE_API_URL, "game/unplayed/:player_id", params);
+
+    const instance = axios.create({
+        headers: getAuthenticationHeader()
+    })
+
+    try {
+        const response = await instance.get(url)
+        return response.data
+    } catch (error) {
+        if (error.response.status === 404) {
+            console.warn(error.response.data)
+        }
+        return null
+    }
+}
+
+export async function createNewGame(maxStages = 10) {
     const user = getAuthenticatedUserFromStorage()
     const params = { publisher_id: user.id, max_stages: maxStages }
     const url = urlcat(BASE_API_URL, "game", params);

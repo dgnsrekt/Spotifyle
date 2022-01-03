@@ -11,6 +11,7 @@ class Profile(models.Model):
     country = models.CharField(max_length=50, null=True)
     bio = models.TextField(null=True)
     twitter = models.SlugField(max_length=50, null=True)
+    data_loaded = models.BooleanField(default=False)
 
     def __self__(self):
         return self.user.username

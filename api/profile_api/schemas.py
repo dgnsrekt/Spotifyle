@@ -35,6 +35,7 @@ class Profile(Schema):
     country: Optional[str]
     bio: Optional[str]
     twitter: Optional[str]
+    data_loaded: bool = False
 
 
 class UpdateProfile(Schema):

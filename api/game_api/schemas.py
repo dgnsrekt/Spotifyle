@@ -17,8 +17,24 @@ class Message(Schema):
     message: str
 
 
+from pydantic import validator
+
+
+class Publisher(Schema):
+    username: str
+
+
 class GameResponse(Schema):
+    id: int
     name: str
     game_code: str
     publisher_id: int
     processed: bool
+
+
+class PlayedGameResponse(Schema):
+    id: int
+    name: str
+    game_code: str
+    publisher_id: int
+    publisher: Publisher

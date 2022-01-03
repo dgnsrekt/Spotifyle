@@ -1,9 +1,28 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link, Outlet } from "react-router-dom";
 import { fetchCurrentUsersProfile } from "../services/profile";
+import { createNewGame } from "../services/game";
 import { LeftPanel } from "./ProfileOverviewSection"
 import { getAuthenticatedUserFromStorage } from "../services/core";
 import "./Dashboard.css"
+
+
+export function CreateGameButton() {
+    const navigate = useNavigate();
+
+    function handleCreateNewGame(event) {
+
+        const startCreatingGame = async () => {
+            const gameCreationStatus = await createNewGame();
+
+            if (gameCreationStatus) {
+                navigate(`/create/${gameCreationStatus.task_id}`)
+            }
+        }
+        startCreatingGame()
+    }
+    return <button onClick={handleCreateNewGame} className="btn btn-success">Create New Game</button>
+}
 
 function HeaderSection(props) {
     return (
@@ -34,7 +53,7 @@ function HeaderLink(props) {
 function LogoutButton(props) {
 
     return (
-        <span id='logout-button' className="flex-grow-1 align-self-baseline d-flex justify-content-end align-items-center"><button
+        <span id='logout-button'><button
             className="btn btn-danger" onClick={props.handleLogout}>Logout</button></span>
     )
 
@@ -56,6 +75,7 @@ function DashBoard(props) {
 
 export default function MainPage(props) {
     const [profile, updateProfile] = useState(null);
+    const [dataLoaded, setDataLoaded] = useState(false);
     const [userInformation, updateUserInformation] = useState(null);
     const navigate = useNavigate();
 
@@ -65,16 +85,22 @@ export default function MainPage(props) {
             const profileData = await fetchCurrentUsersProfile();
             if (!profileData) {
                 navigate("/")
-                sessionStorage.clear()
+                localStorage.clear()
             }
             updateProfile(profileData)
+            setDataLoaded(profileData.data_loaded)
         }
         if (!profile) {
             getCurrentUsersProfile()
         }
+        if (!dataLoaded) {
+            setTimeout(() => { getCurrentUsersProfile() }, 2000)
+        }
+
         updateUserInformation(getAuthenticatedUserFromStorage())
 
-    }, [])
+
+    }, [profile])
 
     return (
         <>
@@ -82,7 +108,13 @@ export default function MainPage(props) {
                 <HeaderLink name="Profile" linkTo={"/dashboard"} />
                 <HeaderLink name="Games" linkTo={"/dashboard/games"} />
                 <HeaderLink name="Leaderboard" linkTo={"/dashboard/leaderboard"} />
-                <LogoutButton handleLogout={props.handleLogout} />
+                <div className="button-group">
+                    {
+                        dataLoaded &&
+                        <CreateGameButton />
+                    }
+                    <LogoutButton handleLogout={props.handleLogout} />
+                </div>
             </HeaderSection>
             {profile &&
                 <DashBoard profile={profile} updateProfile={updateProfile} userInformation={userInformation}>
