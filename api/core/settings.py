@@ -142,13 +142,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # django-cors-headers
 # https://github.com/adamchainz/django-cors-headers
 
-ORIGINS = [
-    "http://localhost:3000",
-    "http://spotifyle.app",
-    "https://spotifyle.app",
-    "http://spotiphyle.com",
-    "https://spotiphyle.com",
-]
+ORIGINS = ["134.122.30.228"]
 
 CORS_ALLOWED_ORIGINS = ORIGINS
 CSRF_TRUSTED_ORIGINS = ORIGINS
