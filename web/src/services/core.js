@@ -1,5 +1,4 @@
-export const BASE_API_URL = "http://localhost:8000/api"
-
+export const BASE_API_URL = "http://134.122.30.228:8000/api"
 
 export function getAuthenticationHeader() {
     const auth = localStorage.getItem("auth")
