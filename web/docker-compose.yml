@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  web:
+    container_name: topsifyle
+    build:
+      context: .
+      dockerfile: web.dockerfile
+    restart: unless-stopped
+    ports:
+      - 80:80
