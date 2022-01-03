@@ -13,10 +13,10 @@ class SpotifyAsset(models.Model):
 
     observers = models.ManyToManyField(User)
     name = models.CharField(max_length=256)
-    spotify_uri = models.SlugField(max_length=50, unique=True)
-    spotify_type = models.CharField(max_length=2, choices=SpotifyType.choices)
-    image = models.SlugField(max_length=50, null=True)
-    preview = models.SlugField(max_length=50, null=True)
+    spotify_uri = models.SlugField(max_length=256, unique=True)
+    spotify_type = models.CharField(max_length=16, choices=SpotifyType.choices)
+    image = models.SlugField(max_length=256, null=True)
+    preview = models.SlugField(max_length=256, null=True)
 
     def __str__(self):
         return self.name

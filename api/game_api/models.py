@@ -6,9 +6,9 @@ from assets.models import SpotifyAsset
 
 # Create your models here.
 class Game(models.Model):
-    game_code = models.SlugField(max_length=32)
+    game_code = models.SlugField(max_length=256)
     publisher = models.ForeignKey(User, on_delete=models.CASCADE)
-    task_id = models.SlugField(max_length=32)
+    task_id = models.SlugField(max_length=256)
     processed = models.BooleanField(default=False)
     name = models.CharField(max_length=256)
 

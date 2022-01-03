@@ -1,7 +1,95 @@
 version: '3.9'
 
 services:
+
+  # web:
+  #   container_name: topsifyle
+  #   build:
+  #     context: .
+  #     dockerfile: web.dockerfile
+  #   restart: unless-stopped
+  #   ports:
+  #     - 80:80
+  #   depends_on:
+  #     - api
+
+  api:
+    container_name: api
+    build:
+      context: .
+      dockerfile: api.dockerfile
+
+    # command: python manage.py migrate
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SECRET=${DJANGO_SECRET}
+      - DEBUG=True
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ALGORITHM=${JWT_ALGORITHM}
+      - SPOTIFY_CLIENT=${SPOTIFY_CLIENT}
+      - SPOTIFY_SECRET=${SPOTIFY_SECRET}
+      - SPOTIFY_REDIRECT=${SPOTIFY_REDIRECT}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - GENIUS_CLIENT_TOKEN=${GENIUS_CLIENT_TOKEN}
+
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+
+    depends_on:
+      - db
+
+  workers:
+    container_name: workers
+    build:
+      context: .
+      dockerfile: api.dockerfile
+
+    # command: python manage.py migrate
+    command: celery --app core worker -E -l INFO
+    environment:
+      - DJANGO_SECRET=${DJANGO_SECRET}
+      - DEBUG=True
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ALGORITHM=${JWT_ALGORITHM}
+      - SPOTIFY_CLIENT=${SPOTIFY_CLIENT}
+      - SPOTIFY_SECRET=${SPOTIFY_SECRET}
+      - SPOTIFY_REDIRECT=${SPOTIFY_REDIRECT}
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+      - GENIUS_CLIENT_TOKEN=${GENIUS_CLIENT_TOKEN}
+
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+
+    depends_on:
+      - db
+
+  db:
+    image: postgres
+    container_name: ${POSTGRES_HOST}
+    volumes:
+      - ./data/db:/var/lib/postgres/data
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+
+    ports:
+      - 5432:5432
+
   redis:
+    container_name: redis
     image: redis:6.2.6-alpine
     ports:
       - 6379:6379
