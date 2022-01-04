@@ -1,8 +1,7 @@
 import { fetchGamesCurrentUserHasPlayed, fetchGamesCurrentUserPublished, fetchGamesCurrentUserUnplayedGames } from "../services/game"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import urlcat from "urlcat";
-import { HOST_PREFIX_URL } from "../common";
+import { CopyContainer } from "./CopyContainer";
 import "./GamesOverviewSection.css"
 
 
@@ -65,21 +64,6 @@ function PublishedGamesButton(props) {
     return <button onClick={handleOnClick} type="button" className="btn btn-secondary">Published</button>
 }
 
-
-function CopyContainer(props) {
-    const { gameCode } = props;
-    const url = urlcat(HOST_PREFIX_URL, "play/:gameCode", { gameCode: gameCode })
-
-    async function copy() {
-        await navigator.clipboard.writeText(url)
-    }
-
-    return (
-        <div>
-            <button className="btn btn-danger" onClick={copy}>Share 📋</button>
-        </div>
-    )
-}
 
 
 
