@@ -6,9 +6,10 @@ from pydantic import HttpUrl, validator
 
 from auth_api.schemas import SpotifyProfile
 
+fake = Faker()
+
 
 def create_fake_occupation():
-    fake = Faker()
     return fake.job().title()
 
 
