@@ -167,9 +167,16 @@ function Avatar(props) {
 
     return (
         <div id="avatar-container">
-            <img id="avatar-image"
-                className="border rounded-circle border-3 bg-dark bg-opacity-100"
-                src={IMAGE_PREFIX_URL + image} alt="https://img.icons8.com/ios-filled/50/000000/name.png" />
+            {image ?
+                <img id="avatar-image"
+                    className="border rounded-circle border-3 bg-dark bg-opacity-100"
+                    src={IMAGE_PREFIX_URL + image} alt="avatar-image" />
+                :
+                <img id="avatar-image"
+                    className="border rounded-circle border-3 bg-dark bg-opacity-100"
+                    src="https://img.icons8.com/ios-filled/50/000000/name.png" alt="avatar-image" />
+            }
+
             <div id="avatar-details">
                 <p>{displayName}</p>
                 <p>👑 1</p>

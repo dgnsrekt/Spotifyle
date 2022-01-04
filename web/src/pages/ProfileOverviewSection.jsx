@@ -33,9 +33,18 @@ export function LeftPanel(props) {
     return (
         <div id="left-panel" className="col-3 p-0">
             <div className="container p-2 position-relative">
-                <img src={IMAGE_PREFIX_URL + profile.image} alt="https://img.icons8.com/ios-filled/50/000000/name.png"
-                    id="profile-image"
-                    className="border rounded-circle border-3 bg-dark bg-opacity-100" />
+
+                {profile.image ?
+                    <img src={IMAGE_PREFIX_URL + profile.image} alt="profile-image"
+                        id="profile-image"
+                        className="border rounded-circle border-3 bg-dark bg-opacity-100" />
+                    :
+                    <img src="https://img.icons8.com/ios-filled/50/000000/name.png" alt="profile-image"
+                        id="profile-image"
+                        className="border rounded-circle border-3 bg-dark bg-opacity-100" />
+
+                }
+
             </div>
             {
                 !editMode ?
