@@ -6,7 +6,7 @@ from game_api.models import Game
 
 
 class ScoreBoard(models.Model):
-    game = models.OneToOneField(Game, on_delete=models.CASCADE, primary_key=True)
+    game = models.OneToOneField(Game, on_delete=models.CASCADE)
     player = models.ForeignKey(User, on_delete=models.CASCADE)
     score = models.BigIntegerField(null=True)
 

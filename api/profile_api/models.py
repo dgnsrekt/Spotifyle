@@ -6,7 +6,7 @@ from django.db import models
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     display_name = models.SlugField(max_length=256, null=True)
-    image = models.SlugField(max_length=256, unique=True)
+    image = models.SlugField(max_length=256, null=True)
     occupation = models.CharField(max_length=256)
     country = models.CharField(max_length=256, null=True)
     bio = models.TextField(null=True)

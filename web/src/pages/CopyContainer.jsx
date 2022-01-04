@@ -6,7 +6,14 @@ export function CopyContainer(props) {
     const url = urlcat(HOST_PREFIX_URL, "/play/:gameCode", { gameCode: gameCode })
 
     async function copy() {
-        await navigator.clipboard.writeText(url)
+        console.log(gameCode)
+        console.log(url)
+        try {
+            var promise = navigator.clipboard.writeText(url)
+            console.log(promise)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
