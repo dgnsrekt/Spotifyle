@@ -174,7 +174,7 @@ function Avatar(props) {
                 :
                 <img id="avatar-image"
                     className="border rounded-circle border-3 bg-dark bg-opacity-100"
-                    src="https://img.icons8.com/ios-filled/50/000000/name.png" alt="avatar-image" />
+                    src="https://img.icons8.com/ios-filled/200/FFFFFF/name.png" alt="avatar-image" />
             }
 
             <div id="avatar-details">

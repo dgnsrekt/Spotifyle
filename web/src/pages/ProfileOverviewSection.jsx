@@ -39,7 +39,7 @@ export function LeftPanel(props) {
                         id="profile-image"
                         className="border rounded-circle border-3 bg-dark bg-opacity-100" />
                     :
-                    <img src="https://img.icons8.com/ios-filled/100/000000/name.png" alt="profile-image"
+                    <img src="https://img.icons8.com/ios-filled/200/000000/name.png" alt="profile-image"
                         id="profile-image"
                         className="border rounded-circle border-3 bg-dark bg-opacity-100" />
 
