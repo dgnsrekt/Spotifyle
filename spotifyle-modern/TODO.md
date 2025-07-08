@@ -55,8 +55,8 @@
 - [x] Write tests for cache service
 
 #### Game Creation Flow
-- [ ] Design game creation UI
-- [ ] Write tests for game creation UI components
+- [x] Design game creation UI
+- [x] Write tests for game creation UI components
 - [ ] Implement game generation algorithms
 - [ ] Write unit tests for game generation logic
 - [ ] Set up async job processing (Inngest/Trigger.dev)
