@@ -14,7 +14,10 @@
     "test:e2e:oauth-debug": "playwright test oauth-debug.spec.ts",
     "test:oauth": "tsx scripts/test-oauth.ts",
     "test:auth-api": "tsx tests/auth-api-test.ts",
-    "playwright:install": "playwright install"
+    "playwright:install": "playwright install",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
@@ -31,13 +34,20 @@
   "devDependencies": {
     "@playwright/test": "^1.53.2",
     "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/jest": "^30.0.0",
     "@types/node": "^20.19.4",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9.30.1",
     "eslint-config-next": "^15.3.5",
+    "jest": "^30.0.4",
+    "jest-environment-jsdom": "^30.0.4",
     "playwright": "^1.53.2",
     "tailwindcss": "^4",
+    "ts-jest": "^29.4.0",
     "tsx": "^4.7.1",
     "typescript": "^5"
   }

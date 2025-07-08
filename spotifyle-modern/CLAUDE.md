@@ -15,28 +15,37 @@
 
 **IMPORTANT: Before considering ANY task complete, you MUST:**
 
-### 1. TypeScript Type Checking
+### 1. Unit Tests - MANDATORY
+```bash
+npm test
+```
+- **ALL TESTS MUST PASS** - No exceptions
+- If tests fail, fix them before proceeding
+- Never skip or disable failing tests
+- Current requirement: 53/53 tests passing
+
+### 2. TypeScript Type Checking
 ```bash
 npx tsc --noEmit
 ```
 - Must pass with zero errors
 - Fix all type errors before proceeding
 
-### 2. Linting
+### 3. Linting
 ```bash
 npm run lint
 ```
 - Must pass with zero errors
 - Fix all linting issues before proceeding
 
-### 3. API Testing
+### 4. API Testing
 ```bash
 npm run test:auth-api
 ```
 - Run automated API tests
 - Verify all endpoints return expected responses
 
-### 4. Manual Testing with Curl
+### 5. Manual Testing with Curl
 Test critical endpoints manually:
 ```bash
 # Test auth signin
@@ -48,25 +57,33 @@ curl -v http://127.0.0.1:3000/api/auth/session
 # Test other critical endpoints
 ```
 
-### 5. E2E Testing (when applicable)
+### 6. E2E Testing (when applicable)
 ```bash
 npm run test:e2e
 ```
 - Run Playwright tests for user flows
 - Especially important for authentication flows
 
-### 6. Build Verification
+### 7. Build Verification
 ```bash
 npm run build
 ```
 - Ensure the project builds successfully
 - Check for any build-time errors
 
-### 7. Dev Server Testing
+### 8. Dev Server Testing
 - Start the dev server and manually test the feature
 - Check browser console for errors
 - Verify no hydration errors
 - Test the complete user flow
+
+## Test Standards
+
+1. **Write tests for all new code** - No code without tests
+2. **Fix failing tests immediately** - Don't accumulate test debt
+3. **Test edge cases** - Not just happy paths
+4. **Keep tests simple and focused** - One test, one assertion
+5. **Use descriptive test names** - Should explain what and why
 
 ## Additional Testing Tools
 
