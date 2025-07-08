@@ -1,10 +1,10 @@
-import { env } from '@/lib/env'
+import { env, getSpotifyRedirectUri } from '@/lib/env'
 
 export const authConfig = {
   spotify: {
     clientId: env.SPOTIFY_CLIENT_ID,
     clientSecret: env.SPOTIFY_CLIENT_SECRET,
-    redirectUri: `${env.AUTH_URL}/api/auth/callback/spotify`,
+    redirectUri: getSpotifyRedirectUri(),
     scopes: [
       'user-read-email',
       'user-read-private',
@@ -51,7 +51,7 @@ export const authConfig = {
   },
   
   urls: {
-    base: env.AUTH_URL,
+    base: env.NEXTAUTH_URL,
     login: '/login',
     dashboard: '/dashboard',
     home: '/',

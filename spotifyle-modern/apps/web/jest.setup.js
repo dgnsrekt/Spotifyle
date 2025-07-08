@@ -2,10 +2,12 @@
 import '@testing-library/jest-dom'
 
 // Mock environment variables for tests
+process.env.NODE_ENV = 'test'
 process.env.SPOTIFY_CLIENT_ID = 'test-client-id'
 process.env.SPOTIFY_CLIENT_SECRET = 'test-client-secret'
 process.env.DATABASE_URL = 'postgresql://test'
-process.env.AUTH_URL = 'http://127.0.0.1:3000'
+process.env.NEXTAUTH_URL = 'http://127.0.0.1:3000'
+process.env.NEXTAUTH_SECRET = 'test-secret-key-for-tests-that-is-long-enough'
 
 // Mock Next.js router
 jest.mock('next/navigation', () => ({

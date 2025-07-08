@@ -1,15 +1,9 @@
 import { redirect } from 'next/navigation'
-import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { prisma } from '@spotifyle/database'
-
-// Only allow in development
-if (process.env.NODE_ENV === 'production') {
-  redirect('/')
-}
 
 async function getStats() {
   const [users, games, sessions, profiles] = await Promise.all([
@@ -69,6 +63,11 @@ async function getRecentGames() {
 }
 
 export default async function DevPage() {
+  // Only allow in development
+  if (process.env.NODE_ENV === 'production') {
+    redirect('/')
+  }
+
   const stats = await getStats()
   const testUser = await getTestUser()
   const recentGames = await getRecentGames()
@@ -139,7 +138,7 @@ export default async function DevPage() {
                 <CardTitle>Games by Type</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {stats.gamesByType.map((item) => (
+                {stats.gamesByType.map((item: { type: string; _count: number }) => (
                   <div key={item.type} className="flex justify-between items-center">
                     <span className="text-sm">{item.type.replace(/_/g, ' ')}</span>
                     <Badge>{item._count}</Badge>
@@ -152,7 +151,7 @@ export default async function DevPage() {
                 <CardTitle>Games by Status</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {stats.gamesByStatus.map((item) => (
+                {stats.gamesByStatus.map((item: { status: string; _count: number }) => (
                   <div key={item.status} className="flex justify-between items-center">
                     <span className="text-sm">{item.status}</span>
                     <Badge variant={
@@ -223,7 +222,7 @@ export default async function DevPage() {
 
         <TabsContent value="games" className="space-y-4">
           <div className="space-y-4">
-            {recentGames.map((game) => (
+            {recentGames.map((game: { id: string; code: string; type: string; status: string; creator: { name: string | null }; _count: { stages: number; sessions: number }; maxPlayers: number | null }) => (
               <Card key={game.id}>
                 <CardHeader>
                   <div className="flex justify-between items-start">
