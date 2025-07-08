@@ -12,9 +12,18 @@ fi
 
 echo "✅ Docker is running"
 
+# Detect which docker compose command to use
+if command -v docker-compose &> /dev/null; then
+    DOCKER_COMPOSE="docker-compose"
+else
+    DOCKER_COMPOSE="docker compose"
+fi
+
+echo "Using command: $DOCKER_COMPOSE"
+
 # Start PostgreSQL with Docker Compose
 echo "Starting PostgreSQL with Docker Compose..."
-docker-compose up -d postgres
+$DOCKER_COMPOSE up -d postgres
 
 # Wait for PostgreSQL to be ready
 echo "Waiting for PostgreSQL to be ready..."
@@ -23,7 +32,7 @@ sleep 5
 # Check if PostgreSQL is ready
 MAX_ATTEMPTS=30
 ATTEMPT=0
-while ! docker-compose exec -T postgres pg_isready -U postgres > /dev/null 2>&1; do
+while ! $DOCKER_COMPOSE exec -T postgres pg_isready -U postgres > /dev/null 2>&1; do
     ATTEMPT=$((ATTEMPT + 1))
     if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
         echo "❌ PostgreSQL failed to start after $MAX_ATTEMPTS attempts"
@@ -46,5 +55,5 @@ echo ""
 echo "You can now:"
 echo "  - Run 'pnpm dev' to start the development server"
 echo "  - Run 'pnpm db:studio' to open Prisma Studio"
-echo "  - Run 'docker-compose ps' to see running services"
-echo "  - Run 'docker-compose down' to stop services"
+echo "  - Run 'pnpm docker:logs' to see service logs"
+echo "  - Run 'pnpm docker:down' to stop services"
