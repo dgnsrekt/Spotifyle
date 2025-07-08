@@ -77,6 +77,69 @@ npm run build
 - Verify no hydration errors
 - Test the complete user flow
 
+### 9. Visual Testing with Playwright MCP
+```bash
+# Use Playwright MCP to visually verify the UI
+mcp__playwright__browser_navigate
+mcp__playwright__browser_take_screenshot
+```
+- Navigate to key pages (/, /login, /dashboard)
+- Take screenshots to verify UI styling and layout
+- Check for visual regressions
+- Verify dark mode is applied correctly
+- Ensure Tailwind CSS and Shadcn/ui components render properly
+- Test responsive layouts at different viewport sizes
+
+### 10. Clean Up Development Server
+```bash
+# IMPORTANT: Always kill the dev server when done testing
+pkill -f "next dev"
+```
+- Kill any running Next.js dev servers to free up ports
+- This prevents "address already in use" errors in future sessions
+- Always clean up background processes before marking task complete
+
+### 11. Reflect and Improve
+Before marking any task complete, take a moment to consider:
+
+**Code Quality Improvements:**
+- Could any code be refactored for better readability or performance?
+- Are there any magic numbers or strings that should be constants?
+- Is there duplicated code that could be extracted into a utility function?
+- Are error messages clear and helpful?
+
+**Test Coverage Enhancements:**
+- Are there edge cases not covered by existing tests?
+- Could integration tests be added to verify component interactions?
+- Should there be tests for error scenarios and unhappy paths?
+- Would snapshot tests help catch UI regressions?
+
+**Documentation Updates:**
+- Does the code have adequate inline comments for complex logic?
+- Should any new patterns or conventions be documented in CLAUDE.md?
+- Are there any gotchas or setup steps that future developers should know?
+- Could the TODO.md be updated with discovered technical debt?
+
+**Development Process Improvements:**
+- Were there any pain points in this task that could be automated?
+- Should any new scripts be added to package.json for common tasks?
+- Could the CLAUDE.md workflow be optimized based on this experience?
+- Are there any tools or extensions that would make development easier?
+
+**Security and Performance:**
+- Are all user inputs properly validated and sanitized?
+- Are there any potential performance bottlenecks?
+- Could any API calls be cached or debounced?
+- Are sensitive data and tokens properly secured?
+
+**Future-Proofing:**
+- Is the implementation flexible enough for future requirements?
+- Are there any upcoming Next.js or library updates to prepare for?
+- Could the architecture be improved to handle scale?
+- Are there any accessibility improvements that could be made?
+
+Take action on at least one improvement before proceeding, even if small. Continuous improvement makes the codebase more maintainable and robust over time.
+
 ## Test Standards
 
 1. **Write tests for all new code** - No code without tests
@@ -121,3 +184,15 @@ Pause and notify the user after:
 - Always use `http://127.0.0.1:3000` in development
 - PKCE is required for OAuth flow
 - Test OAuth flow thoroughly as it's critical for the app
+
+## Known Issues & Gotchas
+
+### Tailwind CSS Version Compatibility
+- **Issue**: Tailwind CSS v4 uses new import syntax (`@import "tailwindcss"`) that requires `@tailwindcss/postcss`
+- **Solution**: Use Tailwind CSS v3 with traditional directives (`@tailwind base/components/utilities`)
+- **Note**: When upgrading to v4, update both PostCSS config and CSS imports
+
+### ESM Module Compatibility
+- **Issue**: Some modules like `arctic` use ESM exports that Jest doesn't handle by default
+- **Solution**: Mock the module in tests or update Jest config with `transformIgnorePatterns`
+- **Note**: Consider using vitest for better ESM support in the future

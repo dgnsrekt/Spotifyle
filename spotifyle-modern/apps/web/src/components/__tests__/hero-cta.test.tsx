@@ -1,10 +1,19 @@
 import { render, screen } from '@testing-library/react'
 import { HeroCTA } from '../hero-cta'
-import { getSession } from '@/lib/auth-arctic'
+import { AuthService } from '@/lib/auth/auth-service'
+
+// Mock arctic module
+jest.mock('arctic', () => ({
+  Spotify: jest.fn().mockImplementation(() => ({})),
+  generateState: jest.fn(),
+  generateCodeVerifier: jest.fn(),
+}))
 
 // Mock auth
-jest.mock('@/lib/auth-arctic', () => ({
-  getSession: jest.fn(),
+jest.mock('@/lib/auth/auth-service', () => ({
+  AuthService: {
+    getSession: jest.fn(),
+  },
 }))
 
 // Mock next/link
@@ -15,7 +24,7 @@ jest.mock('next/link', () => {
 })
 
 describe('HeroCTA', () => {
-  const mockGetSession = getSession as jest.MockedFunction<typeof getSession>
+  const mockGetSession = AuthService.getSession as jest.MockedFunction<typeof AuthService.getSession>
 
   beforeEach(() => {
     jest.clearAllMocks()

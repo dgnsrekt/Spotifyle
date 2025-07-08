@@ -24,17 +24,20 @@
 ## 🚧 In Progress
 
 ### Authentication Implementation
-- [ ] Install remaining dependencies and link packages
-- [ ] Set up local PostgreSQL database
-- [ ] Run Prisma migrations
-- [ ] Test Spotify OAuth flow
-- [ ] Create login/logout UI components
+- [x] Install remaining dependencies and link packages
+- [x] Set up PostgreSQL database (using Docker)
+- [x] Run Prisma migrations
+- [x] Test Spotify OAuth flow
+- [x] Create login/logout UI components
+- [x] Replace NextAuth with Arctic OAuth (better Spotify support)
+- [x] Add comprehensive testing infrastructure
+- [x] Refactor auth into modular, testable components
 
 ## 📋 Upcoming Tasks
 
 ### Phase 1: Foundation (Remaining)
-- [ ] Configure Tailwind CSS properly
-- [ ] Set up Shadcn/ui component library
+- [x] Configure Tailwind CSS properly
+- [x] Set up Shadcn/ui component library
 - [ ] Implement CI/CD pipeline with GitHub Actions
 - [ ] Create seed data for development
 - [ ] Add environment variable validation with Zod

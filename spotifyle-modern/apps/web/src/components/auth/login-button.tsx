@@ -1,12 +1,17 @@
+import { Button } from "@/components/ui/button"
+
 export function LoginButton() {
   return (
-    <a
-      href="/api/auth/signin"
-      className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1DB954] px-4 py-3 text-white shadow-sm transition-colors hover:bg-[#1aa34a] focus:outline-none focus:ring-2 focus:ring-[#1DB954] focus:ring-offset-2"
+    <Button 
+      asChild 
+      className="w-full bg-[#1DB954] hover:bg-[#1aa34a] text-white focus:ring-[#1DB954] gap-3"
+      size="lg"
     >
-      <SpotifyIcon />
-      <span className="text-sm font-medium">Continue with Spotify</span>
-    </a>
+      <a href="/api/auth/signin">
+        <SpotifyIcon />
+        <span>Continue with Spotify</span>
+      </a>
+    </Button>
   )
 }
 

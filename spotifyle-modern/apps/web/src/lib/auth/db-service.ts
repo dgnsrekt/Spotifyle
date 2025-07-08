@@ -63,13 +63,16 @@ export class DatabaseService {
   }): Promise<Session> {
     const expires = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30 days
 
-    return await prisma.session.create({
+    const session = await prisma.session.create({
       data: {
         ...data,
         expires,
       },
       include: { user: true },
     })
+
+    // Type assertion since we know we just created it with a valid accessToken
+    return session as Session
   }
 
   static async findSessionByToken(sessionToken: string): Promise<Session | null> {
@@ -87,7 +90,12 @@ export class DatabaseService {
         return null
       }
 
-      return session
+      // Check if session has access token
+      if (!session.accessToken) {
+        return null
+      }
+
+      return session as Session
     } catch (error) {
       console.error('Error finding session:', error)
       return null
@@ -112,7 +120,7 @@ export class DatabaseService {
       throw new SessionError('Session not found')
     }
 
-    return session
+    return session as Session
   }
 
   static async deleteSession(sessionToken: string): Promise<void> {

@@ -115,7 +115,7 @@ describe('SpotifyClient', () => {
   describe('refreshAccessToken', () => {
     it('should throw not implemented error', async () => {
       await expect(
-        SpotifyClient.refreshAccessToken('client-id', 'client-secret', 'refresh-token')
+        SpotifyClient.refreshAccessToken()
       ).rejects.toThrow('Not implemented yet')
     })
   })

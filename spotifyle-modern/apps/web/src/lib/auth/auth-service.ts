@@ -22,7 +22,7 @@ export class AuthService {
     const url = await spotify.createAuthorizationURL(
       state,
       codeVerifier,
-      authConfig.spotify.scopes
+      [...authConfig.spotify.scopes] // Convert readonly array to mutable array
     )
 
     // Store state and code verifier in cookies

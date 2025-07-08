@@ -24,29 +24,29 @@ describe('LogoutButton', () => {
     expect(button).toHaveAttribute('type', 'submit')
   })
 
-  it('should have proper styling for dark theme', () => {
+  it('should have proper styling with Shadcn/ui Button', () => {
     render(<LogoutButton />)
     
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('bg-gray-700')
-    expect(button).toHaveClass('text-gray-200')
-    expect(button).toHaveClass('hover:bg-gray-600')
+    // Shadcn/ui Button component uses secondary variant and has base classes
+    expect(button).toHaveClass('bg-secondary')
+    expect(button).toHaveClass('text-secondary-foreground')
+    expect(button).toHaveClass('hover:bg-secondary/80')
   })
 
   it('should have focus ring styling', () => {
     render(<LogoutButton />)
     
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('focus:ring-2')
-    expect(button).toHaveClass('focus:ring-gray-500')
-    expect(button).toHaveClass('focus:ring-offset-2')
-    expect(button).toHaveClass('focus:ring-offset-gray-800')
+    // Shadcn/ui Button has built-in focus-visible styles
+    expect(button).toHaveClass('focus-visible:ring-ring/50')
   })
 
   it('should have transition effect', () => {
     render(<LogoutButton />)
     
     const button = screen.getByRole('button')
-    expect(button).toHaveClass('transition-colors')
+    // Shadcn/ui Button uses transition-all
+    expect(button).toHaveClass('transition-all')
   })
 })

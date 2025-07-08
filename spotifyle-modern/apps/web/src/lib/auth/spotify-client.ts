@@ -43,13 +43,10 @@ export class SpotifyClient {
     }
   }
 
-  static async refreshAccessToken(
-    _clientId: string,
-    _clientSecret: string,
-    _refreshToken: string
-  ): Promise<void> {
+  static async refreshAccessToken(): Promise<void> {
     // Implementation for token refresh
     // This would be used in a future update for automatic token refresh
+    // Parameters: clientId, clientSecret, refreshToken
     throw new Error('Not implemented yet')
   }
 }

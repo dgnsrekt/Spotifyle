@@ -24,7 +24,7 @@ export class TokenManager {
   static extractTokens(tokenResponse: {
     accessToken: () => string
     refreshToken: () => string | null
-    accessTokenExpiresAt: () => number | null
+    accessTokenExpiresAt: () => Date | null
   }): AuthTokens {
     const accessToken = tokenResponse.accessToken()
     const refreshToken = tokenResponse.refreshToken()
@@ -33,7 +33,7 @@ export class TokenManager {
     return {
       accessToken,
       refreshToken: refreshToken || null,
-      expiresAt: expiresAt ? new Date(expiresAt) : null,
+      expiresAt: expiresAt,
     }
   }
 

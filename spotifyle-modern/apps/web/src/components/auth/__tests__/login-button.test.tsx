@@ -24,6 +24,7 @@ describe('LoginButton', () => {
   it('should have Spotify green color styling', () => {
     render(<LoginButton />)
     
+    // With asChild, the link itself becomes the button
     const link = screen.getByRole('link')
     expect(link).toHaveClass('bg-[#1DB954]')
     expect(link).toHaveClass('hover:bg-[#1aa34a]')
@@ -56,6 +57,8 @@ describe('LoginButton', () => {
     
     const link = screen.getByRole('link')
     const span = link.querySelector('span')
-    expect(span).toHaveClass('text-sm', 'font-medium')
+    // The span no longer has text-sm and font-medium classes with Shadcn/ui Button
+    expect(span).toBeInTheDocument()
+    expect(span).toHaveTextContent('Continue with Spotify')
   })
 })

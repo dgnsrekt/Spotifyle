@@ -1,8 +1,8 @@
 import Link from "next/link"
-import { getSession } from "@/lib/auth-arctic"
+import { AuthService } from "@/lib/auth/auth-service"
 
 export async function HeroCTA() {
-  const session = await getSession()
+  const session = await AuthService.getSession()
   
   return (
     <div className="mt-10">

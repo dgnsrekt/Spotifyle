@@ -45,7 +45,7 @@ describe('TokenManager', () => {
       const mockResponse = {
         accessToken: () => 'test-access-token',
         refreshToken: () => 'test-refresh-token',
-        accessTokenExpiresAt: () => Date.now() + 3600000,
+        accessTokenExpiresAt: () => new Date(Date.now() + 3600000),
       }
 
       const tokens = TokenManager.extractTokens(mockResponse)
