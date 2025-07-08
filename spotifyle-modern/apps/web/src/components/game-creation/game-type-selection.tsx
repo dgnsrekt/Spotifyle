@@ -108,6 +108,15 @@ export function GameTypeSelection({ gameConfig, onConfigChange }: GameTypeSelect
                   : "hover:border-primary/50"
               )}
               onClick={() => handleGameTypeSelect(type.id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  handleGameTypeSelect(type.id)
+                }
+              }}
+              aria-pressed={isSelected}
             >
               <CardHeader className="text-center pb-4">
                 <div className="mx-auto mb-4 p-3 rounded-full bg-primary/10">
@@ -167,32 +176,43 @@ export function GameTypeSelection({ gameConfig, onConfigChange }: GameTypeSelect
       </div>
 
       {/* Selected Game Details */}
-      {gameConfig.type && (
-        <Card className="bg-muted/30">
-          <CardHeader>
-            <CardTitle className="text-lg">
-              {gameTypes.find(t => t.id === gameConfig.type)?.title}
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground mb-4">
-              {gameTypes.find(t => t.id === gameConfig.type)?.longDescription}
-            </p>
-            
-            <div className="space-y-2">
-              <h4 className="font-medium text-sm">All Features:</h4>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
-                {gameTypes.find(t => t.id === gameConfig.type)?.features.map((feature) => (
-                  <div key={feature} className="text-sm text-muted-foreground flex items-center gap-2">
-                    <div className="h-1.5 w-1.5 bg-primary rounded-full" />
-                    {feature}
-                  </div>
-                ))}
+      <Card className={cn(
+        "bg-muted/30 transition-all duration-300 min-h-[200px]",
+        !gameConfig.type && "opacity-50"
+      )}>
+        <CardHeader>
+          <CardTitle className="text-lg">
+            {gameConfig.type 
+              ? gameTypes.find(t => t.id === gameConfig.type)?.title 
+              : "Select a Game Type"}
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          {gameConfig.type ? (
+            <>
+              <p className="text-muted-foreground mb-4">
+                {gameTypes.find(t => t.id === gameConfig.type)?.longDescription}
+              </p>
+              
+              <div className="space-y-2">
+                <h4 className="font-medium text-sm">All Features:</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-1">
+                  {gameTypes.find(t => t.id === gameConfig.type)?.features.map((feature) => (
+                    <div key={feature} className="text-sm text-muted-foreground flex items-center gap-2">
+                      <div className="h-1.5 w-1.5 bg-primary rounded-full" />
+                      {feature}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+            </>
+          ) : (
+            <p className="text-muted-foreground">
+              Choose one of the game types above to see more details about the gameplay and features.
+            </p>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { SpotifyUser, SpotifyError } from '@/types/spotify'
+import type { SpotifyUser, SpotifyError } from '@/types/spotify'
 import { OAuthError } from '@/types/auth'
 
 export class SpotifyClient {
@@ -7,10 +7,10 @@ export class SpotifyClient {
 
   static async fetchUserProfile(accessToken: string): Promise<SpotifyUser> {
     const controller = new AbortController()
-    const timeoutId = setTimeout(() => controller.abort(), this.TIMEOUT_MS)
+    const timeoutId = setTimeout(() => controller.abort(), SpotifyClient.TIMEOUT_MS)
 
     try {
-      const response = await fetch(`${this.API_BASE_URL}/me`, {
+      const response = await fetch(`${SpotifyClient.API_BASE_URL}/me`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

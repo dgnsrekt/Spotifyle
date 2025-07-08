@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server"
+import { type NextRequest, NextResponse } from "next/server"
 
 export default async function middleware(request: NextRequest) {
   // Check if accessing via localhost and redirect to 127.0.0.1

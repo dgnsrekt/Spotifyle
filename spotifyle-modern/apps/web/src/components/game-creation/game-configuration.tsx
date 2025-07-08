@@ -110,7 +110,7 @@ export function GameConfiguration({ gameConfig, onConfigChange }: GameConfigurat
           {/* Question Count */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <Label className="flex items-center gap-2">
+              <Label htmlFor="question-count" className="flex items-center gap-2">
                 <Hash className="h-4 w-4" />
                 Number of Questions: {currentQuestionCount}
               </Label>
@@ -119,6 +119,7 @@ export function GameConfiguration({ gameConfig, onConfigChange }: GameConfigurat
               </Badge>
             </div>
             <Slider
+              id="question-count"
               value={[currentQuestionCount]}
               onValueChange={([value]) => handleInputChange('questionCount', value)}
               min={questionConfig.min}
@@ -134,11 +135,12 @@ export function GameConfiguration({ gameConfig, onConfigChange }: GameConfigurat
 
           {/* Time Limit */}
           <div className="space-y-3">
-            <Label className="flex items-center gap-2">
+            <Label htmlFor="time-limit" className="flex items-center gap-2">
               <Clock className="h-4 w-4" />
               Time per Question: {currentTimeLimit}s
             </Label>
             <Slider
+              id="time-limit"
               value={[currentTimeLimit]}
               onValueChange={([value]) => handleInputChange('timeLimit', value)}
               min={timeConfig.min}
@@ -169,7 +171,7 @@ export function GameConfiguration({ gameConfig, onConfigChange }: GameConfigurat
           {/* Include Recent Tracks */}
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="flex items-center gap-2">
+              <Label htmlFor="include-recent-tracks" className="flex items-center gap-2">
                 <TrendingUp className="h-4 w-4" />
                 Include Recent Tracks
               </Label>
@@ -178,6 +180,7 @@ export function GameConfiguration({ gameConfig, onConfigChange }: GameConfigurat
               </p>
             </div>
             <Switch
+              id="include-recent-tracks"
               checked={gameConfig.includeRecentTracks ?? true}
               onCheckedChange={(checked) => handleInputChange('includeRecentTracks', checked)}
             />
@@ -188,7 +191,7 @@ export function GameConfiguration({ gameConfig, onConfigChange }: GameConfigurat
           {/* Include Top Artists */}
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="flex items-center gap-2">
+              <Label htmlFor="include-top-artists" className="flex items-center gap-2">
                 <Music className="h-4 w-4" />
                 Include Top Artists
               </Label>
@@ -197,6 +200,7 @@ export function GameConfiguration({ gameConfig, onConfigChange }: GameConfigurat
               </p>
             </div>
             <Switch
+              id="include-top-artists"
               checked={gameConfig.includeTopArtists ?? true}
               onCheckedChange={(checked) => handleInputChange('includeTopArtists', checked)}
             />

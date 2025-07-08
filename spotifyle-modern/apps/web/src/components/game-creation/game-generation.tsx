@@ -131,7 +131,7 @@ export function GameGeneration({ gameConfig, isGenerating }: GameGenerationProps
             Creating Your Game
           </CardTitle>
           <CardDescription>
-            Generating your personalized {gameConfig.type?.replace('-', ' ')} game...
+            Generating your personalized {gameConfig.type?.replace(/-/g, ' ')} game...
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -229,7 +229,7 @@ export function GameGeneration({ gameConfig, isGenerating }: GameGenerationProps
             </div>
             <div>
               <span className="text-muted-foreground">Type:</span>
-              <p className="font-medium capitalize">{gameConfig.type?.replace('-', ' ')}</p>
+              <p className="font-medium capitalize">{gameConfig.type?.replace(/-/g, ' ')}</p>
             </div>
             <div>
               <span className="text-muted-foreground">Questions:</span>

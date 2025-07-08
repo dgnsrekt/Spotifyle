@@ -51,7 +51,7 @@ export class CookieManager {
   }
 
   static clearAuthCookies() {
-    this.deleteCodeVerifier()
-    this.deleteState()
+    CookieManager.deleteCodeVerifier()
+    CookieManager.deleteState()
   }
 }

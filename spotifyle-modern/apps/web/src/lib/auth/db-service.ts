@@ -86,7 +86,7 @@ export class DatabaseService {
 
       // Check if session is expired
       if (new Date() > session.expires) {
-        await this.deleteSession(sessionToken)
+        await DatabaseService.deleteSession(sessionToken)
         return null
       }
 

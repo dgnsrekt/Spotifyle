@@ -148,7 +148,7 @@ export async function retryWithBackoff<T>(
         break
       }
       
-      const delay = baseDelay * Math.pow(2, attempt)
+      const delay = baseDelay * 2 ** attempt
       await new Promise(resolve => setTimeout(resolve, delay))
     }
   }
