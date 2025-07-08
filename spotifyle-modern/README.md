@@ -5,7 +5,7 @@ A modern rewrite of Spotifyle using Next.js 14, TypeScript, and Prisma.
 ## Prerequisites
 
 - Node.js 20+ or Bun 1.0+
-- PostgreSQL 16+
+- Docker and Docker Compose
 - pnpm 8+
 - Spotify Developer App (for OAuth)
 
@@ -28,9 +28,12 @@ A modern rewrite of Spotifyle using Next.js 14, TypeScript, and Prisma.
 
 3. **Set up the database**
    ```bash
-   # Make sure PostgreSQL is running
-   # Then run:
+   # This will start PostgreSQL in Docker and run migrations
    pnpm db:setup
+   
+   # Or manually:
+   pnpm docker:up     # Start PostgreSQL in Docker
+   pnpm db:migrate    # Run migrations
    ```
 
 4. **Start the development server**
@@ -71,6 +74,12 @@ pnpm db:generate  # Generate Prisma client
 pnpm db:push      # Push schema changes
 pnpm db:migrate   # Run migrations
 pnpm db:studio    # Open Prisma Studio
+
+# Docker
+pnpm docker:up    # Start services (PostgreSQL, Redis)
+pnpm docker:down  # Stop services
+pnpm docker:logs  # View service logs
+pnpm docker:clean # Stop and remove volumes
 ```
 
 ## Tech Stack

@@ -14,7 +14,11 @@
     "db:generate": "pnpm --filter @spotifyle/database db:generate",
     "db:push": "pnpm --filter @spotifyle/database db:push",
     "db:migrate": "pnpm --filter @spotifyle/database db:migrate",
-    "db:studio": "pnpm --filter @spotifyle/database db:studio"
+    "db:studio": "pnpm --filter @spotifyle/database db:studio",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
