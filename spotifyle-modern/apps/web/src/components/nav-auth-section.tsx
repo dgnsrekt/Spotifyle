@@ -1,24 +1,8 @@
-"use client"
-
 import Link from "next/link"
-import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { getSession } from "@/lib/auth-arctic"
 
-export function NavAuthSection() {
-  const { data: session, status } = useSession()
-  const [mounted, setMounted] = useState(false)
-  
-  useEffect(() => {
-    setMounted(true)
-  }, [])
-  
-  if (!mounted) {
-    return <div className="h-10 w-32" />
-  }
-  
-  if (status === "loading") {
-    return <div className="h-10 w-32 animate-pulse bg-gray-700 rounded-md" />
-  }
+export async function NavAuthSection() {
+  const session = await getSession()
   
   return (
     <div>

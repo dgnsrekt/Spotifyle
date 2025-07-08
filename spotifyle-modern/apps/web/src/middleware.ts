@@ -1,32 +1,27 @@
-import { auth } from "@/lib/auth"
-import { NextResponse } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
-export default auth((req) => {
-  const isLoggedIn = !!req.auth
-  const isAuthPage = req.nextUrl.pathname.startsWith("/login")
-  const isPublicPage = req.nextUrl.pathname === "/" || req.nextUrl.pathname.startsWith("/api/auth")
-
-  if (isAuthPage) {
-    if (isLoggedIn) {
-      return NextResponse.redirect(new URL("/dashboard", req.url))
-    }
-    return NextResponse.next()
+export default async function middleware(request: NextRequest) {
+  // Check if accessing via localhost and redirect to 127.0.0.1
+  const host = request.headers.get('host')
+  if (host?.includes('localhost')) {
+    const url = new URL(request.url)
+    url.hostname = '127.0.0.1'
+    return NextResponse.redirect(url.toString())
   }
-
-  if (!isLoggedIn && !isPublicPage) {
-    let from = req.nextUrl.pathname
-    if (req.nextUrl.search) {
-      from += req.nextUrl.search
-    }
-
-    return NextResponse.redirect(
-      new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
-    )
-  }
-
+  
   return NextResponse.next()
-})
+}
 
+// Optionally, don't invoke Middleware on certain paths
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api/auth (auth endpoints)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    "/((?!api/auth|_next/static|_next/image|favicon.ico).*)",
+  ],
 }

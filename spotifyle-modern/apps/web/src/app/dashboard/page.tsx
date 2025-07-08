@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation"
-import { auth } from "@/lib/auth"
+import { getSession } from "@/lib/auth-arctic"
 import { LogoutButton } from "@/components/auth/logout-button"
 
 export default async function DashboardPage() {
-  const session = await auth()
+  const session = await getSession()
   
   if (!session) {
     redirect("/login")
@@ -32,7 +32,7 @@ export default async function DashboardPage() {
           </h2>
           
           <div className="prose prose-invert text-gray-300">
-            <p>You're successfully logged in with Spotify.</p>
+            <p>You&apos;re successfully logged in with Spotify.</p>
             <p>Game features coming soon...</p>
             
             <details className="mt-8">

@@ -1,22 +1,12 @@
-"use client"
-
-import { signIn } from "next-auth/react"
-
 export function LoginButton() {
-  const handleLogin = () => {
-    signIn("spotify", { 
-      callbackUrl: "/dashboard",
-    })
-  }
-
   return (
-    <button
-      onClick={handleLogin}
+    <a
+      href="/api/auth/signin"
       className="flex w-full items-center justify-center gap-3 rounded-md bg-[#1DB954] px-4 py-3 text-white shadow-sm transition-colors hover:bg-[#1aa34a] focus:outline-none focus:ring-2 focus:ring-[#1DB954] focus:ring-offset-2"
     >
       <SpotifyIcon />
       <span className="text-sm font-medium">Continue with Spotify</span>
-    </button>
+    </a>
   )
 }
 

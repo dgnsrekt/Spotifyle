@@ -56,6 +56,9 @@ model Session {
   sessionToken String   @unique
   userId       String
   expires      DateTime
+  accessToken  String?  @db.Text
+  refreshToken String?  @db.Text
+  expiresAt    DateTime?
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 

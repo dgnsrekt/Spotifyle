@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-07-08T07:06:02.583Z",
+  "currentUrl": "http://localhost:3000/login?error=true?error=Configuration",
+  "consoleErrors": [],
+  "networkErrors": [],
+  "cookies": [
+    {
+      "name": "authjs.csrf-token",
+      "value": "db9c899f9225b36f249cd164a242c771c26243ff486bd95b3e37d94c7dfddd04%7Cc01d4b07dd04871fd51282a50be196060628d16383bfa27acc33db461807cada",
+      "domain": "127.0.0.1",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "authjs.callback-url",
+      "value": "http%3A%2F%2Flocalhost%3A3000",
+      "domain": "127.0.0.1",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "authjs.csrf-token",
+      "value": "193507cdcddf84326682fb328e0f2fbc025bc5f0e0839e15f0a639f1f0016f4b%7Caf280c1a53ce526a409998608a3f900288c952bef5dd1968732a81a081fb1a75",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "authjs.callback-url",
+      "value": "http%3A%2F%2Flocalhost%3A3000",
+      "domain": "localhost",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "localStorage": {},
+  "sessionStorage": {}
+}

@@ -1,4 +1,3 @@
-import Link from "next/link"
 import { NavAuthSection } from "@/components/nav-auth-section"
 import { HeroCTA } from "@/components/hero-cta"
 

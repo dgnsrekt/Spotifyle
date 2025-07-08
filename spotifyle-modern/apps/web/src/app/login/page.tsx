@@ -1,17 +1,18 @@
 import { redirect } from "next/navigation"
-import { auth } from "@/lib/auth"
+import { getSession } from "@/lib/auth-arctic"
 import { LoginButton } from "@/components/auth/login-button"
 
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { from?: string; error?: string }
+  searchParams: Promise<{ from?: string; error?: string }>
 }) {
-  const session = await auth()
+  const session = await getSession()
+  const params = await searchParams
   
   // If already logged in, redirect
   if (session) {
-    redirect(searchParams.from || "/dashboard")
+    redirect(params.from || "/dashboard")
   }
 
   return (
@@ -27,7 +28,7 @@ export default async function LoginPage({
         </div>
 
         <div className="mt-8 space-y-6 bg-gray-800 px-8 py-10 shadow-xl rounded-lg border border-gray-700">
-          {searchParams.error && (
+          {params.error && (
             <div className="bg-red-900/20 border border-red-700 text-red-400 px-4 py-3 rounded">
               <p className="text-sm">
                 There was an error signing in. Please try again.
