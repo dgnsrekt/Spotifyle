@@ -9,7 +9,12 @@
     "test": "turbo test",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
-    "clean": "turbo clean && rm -rf node_modules"
+    "clean": "turbo clean && rm -rf node_modules",
+    "db:setup": "./scripts/setup-db.sh",
+    "db:generate": "pnpm --filter @spotifyle/database db:generate",
+    "db:push": "pnpm --filter @spotifyle/database db:push",
+    "db:migrate": "pnpm --filter @spotifyle/database db:migrate",
+    "db:studio": "pnpm --filter @spotifyle/database db:studio"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
