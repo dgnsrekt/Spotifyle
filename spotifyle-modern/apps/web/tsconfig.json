@@ -27,7 +27,9 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@spotifyle/spotify": ["../../packages/spotify/index.ts"],
+      "@spotifyle/database": ["../../packages/database/index.ts"]
     },
     "types": ["jest", "@testing-library/jest-dom"]
   },

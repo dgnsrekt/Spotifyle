@@ -3,9 +3,26 @@
  * Generates game content based on user's Spotify data
  */
 
-import type { GameType, GameConfig } from '@/lib/schemas/game-config'
+import type { GameConfig } from '@/lib/schemas/game-config'
 import type { SpotifyArtist, SpotifyTrack } from '@spotifyle/spotify'
-import { getUserTopItems } from '@spotifyle/spotify'
+
+// Type for the getUserTopItems function that will be injected
+type GetUserTopItemsFunction = (
+  userId: string,
+  accessToken: string,
+  type: 'artists' | 'tracks',
+  params?: { limit?: number }
+) => Promise<{ items: SpotifyArtist[] | SpotifyTrack[] }>
+
+// This will be set by the caller or use a default implementation
+let getUserTopItems: GetUserTopItemsFunction = async () => {
+  throw new Error('getUserTopItems not initialized. Please set it before using the game generator.')
+}
+
+// Function to set the getUserTopItems implementation
+export function setGetUserTopItems(fn: GetUserTopItemsFunction) {
+  getUserTopItems = fn
+}
 
 export interface GameStage {
   question: {
@@ -62,12 +79,13 @@ async function generateArtistTriviaGame(
   accessToken: string
 ): Promise<GeneratedGame> {
   // Fetch user's top artists
-  const { items: artists } = await getUserTopItems(
+  const { items } = await getUserTopItems(
     userId,
     accessToken,
     'artists',
     { limit: 50 }
   )
+  const artists = items as SpotifyArtist[]
 
   if (artists.length < 4) {
     throw new Error('Not enough artists to generate trivia questions')
@@ -78,7 +96,7 @@ async function generateArtistTriviaGame(
 
   for (let i = 0; i < config.questionCount; i++) {
     // Select a random artist that hasn't been used
-    const availableArtists = artists.filter(a => !usedArtists.has(a.id))
+    const availableArtists = artists.filter((a: SpotifyArtist) => !usedArtists.has(a.id))
     if (availableArtists.length === 0) {
       // Reset if we've used all artists
       usedArtists.clear()
@@ -324,12 +342,13 @@ async function generateFindTrackArtGame(
   accessToken: string
 ): Promise<GeneratedGame> {
   // Fetch user's top tracks
-  const { items: tracks } = await getUserTopItems(
+  const { items } = await getUserTopItems(
     userId,
     accessToken,
     'tracks',
     { limit: 50 }
   )
+  const tracks = items as SpotifyTrack[]
 
   if (tracks.length < 4) {
     throw new Error('Not enough tracks to generate album art questions')
@@ -340,10 +359,10 @@ async function generateFindTrackArtGame(
 
   for (let i = 0; i < config.questionCount; i++) {
     // Select a random track that hasn't been used
-    const availableTracks = tracks.filter(t => !usedTracks.has(t.id) && t.album.images.length > 0)
+    const availableTracks = tracks.filter((t: SpotifyTrack) => !usedTracks.has(t.id) && t.album.images.length > 0)
     if (availableTracks.length === 0) {
       usedTracks.clear()
-      availableTracks.push(...tracks.filter(t => t.album.images.length > 0))
+      availableTracks.push(...tracks.filter((t: SpotifyTrack) => t.album.images.length > 0))
     }
 
     const targetTrack = availableTracks[Math.floor(Math.random() * availableTracks.length)]
@@ -351,10 +370,10 @@ async function generateFindTrackArtGame(
 
     // Find other tracks with different album art
     const wrongChoices = tracks
-      .filter(t => t.id !== targetTrack.id && t.album.id !== targetTrack.album.id && t.album.images.length > 0)
+      .filter((t: SpotifyTrack) => t.id !== targetTrack.id && t.album.id !== targetTrack.album.id && t.album.images.length > 0)
       .sort(() => Math.random() - 0.5)
       .slice(0, 3)
-      .map(t => ({
+      .map((t: SpotifyTrack) => ({
         id: t.id,
         text: t.album.name,
         imageUrl: t.album.images[0]?.url
@@ -400,12 +419,13 @@ async function generateMultipleTrackLockinGame(
   accessToken: string
 ): Promise<GeneratedGame> {
   // Fetch user's top tracks
-  const { items: tracks } = await getUserTopItems(
+  const { items } = await getUserTopItems(
     userId,
     accessToken,
     'tracks',
     { limit: 50 }
   )
+  const tracks = items as SpotifyTrack[]
 
   if (tracks.length < 4) {
     throw new Error('Not enough tracks to generate audio questions')
@@ -416,10 +436,10 @@ async function generateMultipleTrackLockinGame(
 
   for (let i = 0; i < config.questionCount; i++) {
     // Select a random track that hasn't been used
-    const availableTracks = tracks.filter(t => !usedTracks.has(t.id) && t.preview_url)
+    const availableTracks = tracks.filter((t: SpotifyTrack) => !usedTracks.has(t.id) && t.preview_url)
     if (availableTracks.length === 0) {
       usedTracks.clear()
-      availableTracks.push(...tracks.filter(t => t.preview_url))
+      availableTracks.push(...tracks.filter((t: SpotifyTrack) => t.preview_url))
     }
 
     if (availableTracks.length === 0) {
@@ -435,15 +455,15 @@ async function generateMultipleTrackLockinGame(
     if (config.difficulty === 'hard') {
       // For hard, select tracks from the same artist or genre
       wrongChoices = tracks
-        .filter(t => t.id !== targetTrack.id && 
+        .filter((t: SpotifyTrack) => t.id !== targetTrack.id && 
           (t.artists[0].id === targetTrack.artists[0].id || 
-           t.artists.some(a => targetTrack.artists.map(ta => ta.id).includes(a.id))))
+           t.artists.some((a: SpotifyArtist) => targetTrack.artists.map((ta: SpotifyArtist) => ta.id).includes(a.id))))
         .slice(0, 3)
       
       // If not enough from same artist, add similar tracks
       if (wrongChoices.length < 3) {
         const additional = tracks
-          .filter(t => t.id !== targetTrack.id && !wrongChoices.map(w => w.id).includes(t.id))
+          .filter((t: SpotifyTrack) => t.id !== targetTrack.id && !wrongChoices.map((w: SpotifyTrack) => w.id).includes(t.id))
           .sort(() => Math.random() - 0.5)
           .slice(0, 3 - wrongChoices.length)
         wrongChoices.push(...additional)
@@ -451,14 +471,14 @@ async function generateMultipleTrackLockinGame(
     } else {
       // For easy/medium, select random different tracks
       wrongChoices = tracks
-        .filter(t => t.id !== targetTrack.id)
+        .filter((t: SpotifyTrack) => t.id !== targetTrack.id)
         .sort(() => Math.random() - 0.5)
         .slice(0, 3)
     }
 
     const choices = [...wrongChoices, targetTrack]
       .sort(() => Math.random() - 0.5)
-      .map(t => ({
+      .map((t: SpotifyTrack) => ({
         id: t.id,
         text: `${t.name} - ${t.artists[0].name}`,
         imageUrl: t.album.images[2]?.url // Small image

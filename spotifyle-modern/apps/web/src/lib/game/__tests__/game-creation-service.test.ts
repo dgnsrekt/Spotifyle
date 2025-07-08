@@ -4,12 +4,15 @@
 
 // Mock auth service before importing anything that uses it
 jest.mock('@/lib/auth/auth-service', () => ({
-  getSession: jest.fn()
+  AuthService: {
+    getSession: jest.fn()
+  }
 }))
 
 // Mock dependencies
 jest.mock('../game-generator')
 jest.mock('../game-db-service')
+jest.mock('../spotify-data-fetcher')
 jest.mock('@/lib/schemas/game-config', () => ({
   ...jest.requireActual('@/lib/schemas/game-config'),
   validateGameConfig: jest.fn(config => config)
@@ -18,14 +21,14 @@ jest.mock('@/lib/schemas/game-config', () => ({
 import { createAndGenerateGame, createGameWithProgress, validateUserCanCreateGame } from '../game-creation-service'
 import { generateGame } from '../game-generator'
 import { createGame, completeGameGeneration } from '../game-db-service'
-import { getSession } from '@/lib/auth/auth-service'
+import { AuthService } from '@/lib/auth/auth-service'
 import { validateGameConfig } from '@/lib/schemas/game-config'
 import type { GameConfig } from '@/lib/schemas/game-config'
 
 const mockGenerateGame = generateGame as jest.MockedFunction<typeof generateGame>
 const mockCreateGame = createGame as jest.MockedFunction<typeof createGame>
 const mockCompleteGameGeneration = completeGameGeneration as jest.MockedFunction<typeof completeGameGeneration>
-const mockGetSession = getSession as jest.MockedFunction<typeof getSession>
+const mockGetSession = AuthService.getSession as jest.MockedFunction<typeof AuthService.getSession>
 const mockValidateGameConfig = validateGameConfig as jest.MockedFunction<typeof validateGameConfig>
 
 describe('Game Creation Service', () => {

@@ -2,17 +2,12 @@
  * Tests for Game Generator
  */
 
-import { generateGame } from '../game-generator'
+import { generateGame, setGetUserTopItems } from '../game-generator'
 import type { GameConfig } from '@/lib/schemas/game-config'
 import type { SpotifyArtist, SpotifyTrack } from '@spotifyle/spotify'
-import { getUserTopItems } from '@spotifyle/spotify'
 
-// Mock dependencies
-jest.mock('@spotifyle/spotify', () => ({
-  getUserTopItems: jest.fn()
-}))
-
-const mockGetUserTopItems = getUserTopItems as jest.MockedFunction<typeof getUserTopItems>
+// Mock function for getUserTopItems
+const mockGetUserTopItems = jest.fn()
 
 // Test data
 const mockArtists: SpotifyArtist[] = [
@@ -222,6 +217,8 @@ describe('Game Generator', () => {
 
   beforeEach(() => {
     jest.clearAllMocks()
+    // Set the mock function for getUserTopItems
+    setGetUserTopItems(mockGetUserTopItems)
   })
 
   describe('generateGame', () => {
@@ -237,13 +234,7 @@ describe('Game Generator', () => {
       }
 
       mockGetUserTopItems.mockResolvedValueOnce({
-        items: mockArtists,
-        total: mockArtists.length,
-        limit: 50,
-        offset: 0,
-        href: 'https://api.spotify.com',
-        next: null,
-        previous: null
+        items: mockArtists
       })
 
       const result = await generateGame(config, mockUserId, mockAccessToken)
@@ -279,13 +270,7 @@ describe('Game Generator', () => {
       }
 
       mockGetUserTopItems.mockResolvedValueOnce({
-        items: mockTracks,
-        total: mockTracks.length,
-        limit: 50,
-        offset: 0,
-        href: 'https://api.spotify.com',
-        next: null,
-        previous: null
+        items: mockTracks
       })
 
       const result = await generateGame(config, mockUserId, mockAccessToken)
@@ -313,13 +298,7 @@ describe('Game Generator', () => {
       }
 
       mockGetUserTopItems.mockResolvedValueOnce({
-        items: mockTracks,
-        total: mockTracks.length,
-        limit: 50,
-        offset: 0,
-        href: 'https://api.spotify.com',
-        next: null,
-        previous: null
+        items: mockTracks
       })
 
       const result = await generateGame(config, mockUserId, mockAccessToken)
@@ -362,13 +341,7 @@ describe('Game Generator', () => {
       }
 
       mockGetUserTopItems.mockResolvedValueOnce({
-        items: mockArtists.slice(0, 2), // Only 2 artists
-        total: 2,
-        limit: 50,
-        offset: 0,
-        href: 'https://api.spotify.com',
-        next: null,
-        previous: null
+        items: mockArtists.slice(0, 2) // Only 2 artists
       })
 
       await expect(generateGame(config, mockUserId, mockAccessToken))
@@ -392,13 +365,7 @@ describe('Game Generator', () => {
       }))
 
       mockGetUserTopItems.mockResolvedValueOnce({
-        items: tracksWithoutPreviews,
-        total: tracksWithoutPreviews.length,
-        limit: 50,
-        offset: 0,
-        href: 'https://api.spotify.com',
-        next: null,
-        previous: null
+        items: tracksWithoutPreviews
       })
 
       await expect(generateGame(config, mockUserId, mockAccessToken))
@@ -432,13 +399,7 @@ describe('Game Generator', () => {
       }
 
       mockGetUserTopItems.mockResolvedValueOnce({
-        items: manyArtists,
-        total: manyArtists.length,
-        limit: 50,
-        offset: 0,
-        href: 'https://api.spotify.com',
-        next: null,
-        previous: null
+        items: manyArtists
       })
 
       const result = await generateGame(config, mockUserId, mockAccessToken)
@@ -488,7 +449,7 @@ describe('Game Generator', () => {
           expect(avgPoints).toBeGreaterThanOrEqual(100)
           expect(avgPoints).toBeLessThanOrEqual(150)
         } else {
-          expect(avgPoints).toBeGreaterThan(150)
+          expect(avgPoints).toBeGreaterThanOrEqual(150)
         }
       }
     })

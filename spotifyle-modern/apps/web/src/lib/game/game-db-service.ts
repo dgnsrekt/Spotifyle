@@ -250,7 +250,7 @@ export async function completeGameGeneration(
   generatedGame: GeneratedGame
 ): Promise<Game> {
   // Save stages and update game status in a transaction
-  const [stages, game] = await prisma.$transaction(async (tx) => {
+  const [, game] = await prisma.$transaction(async (tx) => {
     // Save stages
     const stageData = generatedGame.stages.map(stage => ({
       gameId,

@@ -5,9 +5,13 @@
 
 import type { GameConfig } from '@/lib/schemas/game-config'
 import { validateGameConfig } from '@/lib/schemas/game-config'
-import { generateGame } from './game-generator'
+import { generateGame, setGetUserTopItems } from './game-generator'
 import { createGame, completeGameGeneration } from './game-db-service'
-import { getSession } from '@/lib/auth/auth-service'
+import { AuthService } from '@/lib/auth/auth-service'
+import { getUserTopItems } from './spotify-data-fetcher'
+
+// Initialize the game generator with the Spotify data fetcher
+setGetUserTopItems(getUserTopItems)
 
 export interface GameCreationResult {
   gameId: string
@@ -24,7 +28,7 @@ export async function createAndGenerateGame(
 ): Promise<GameCreationResult> {
   try {
     // Get current user session
-    const session = await getSession()
+    const session = await AuthService.getSession()
     if (!session?.user?.id || !session.accessToken) {
       return {
         gameId: '',
@@ -102,7 +106,7 @@ export async function createGameWithProgress(
     })
 
     // Get current user session
-    const session = await getSession()
+    const session = await AuthService.getSession()
     if (!session?.user?.id || !session.accessToken) {
       return {
         gameId: '',
@@ -189,10 +193,8 @@ export async function createGameWithProgress(
 /**
  * Validate if user has enough data to create a game
  */
-export async function validateUserCanCreateGame(
-  gameType: string
-): Promise<{ canCreate: boolean; reason?: string }> {
-  const session = await getSession()
+export async function validateUserCanCreateGame(): Promise<{ canCreate: boolean; reason?: string }> {
+  const session = await AuthService.getSession()
   if (!session?.user?.id || !session.accessToken) {
     return {
       canCreate: false,

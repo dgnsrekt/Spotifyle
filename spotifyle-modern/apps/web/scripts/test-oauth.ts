@@ -19,7 +19,7 @@ console.log('🔍 Starting OAuth Testing Suite...\n')
 
 // Function to run a test and capture output
 function runTest(testFile: string): Promise<string> {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const output: string[] = []
     
     const test = spawn('pnpm', ['playwright', 'test', testFile, '--reporter=list'], {
