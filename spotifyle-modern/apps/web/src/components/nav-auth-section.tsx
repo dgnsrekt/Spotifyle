@@ -17,7 +17,7 @@ export function NavAuthSection() {
   }
   
   if (status === "loading") {
-    return <div className="h-10 w-32 animate-pulse bg-gray-200 rounded-md" />
+    return <div className="h-10 w-32 animate-pulse bg-gray-700 rounded-md" />
   }
   
   return (

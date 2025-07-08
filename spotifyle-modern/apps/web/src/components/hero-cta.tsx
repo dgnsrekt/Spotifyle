@@ -17,7 +17,7 @@ export function HeroCTA() {
   }
   
   if (status === "loading") {
-    return <div className="mt-10 h-12 w-32 animate-pulse bg-gray-200 rounded-md" />
+    return <div className="mt-10 h-12 w-32 animate-pulse bg-gray-700 rounded-md" />
   }
   
   return (
