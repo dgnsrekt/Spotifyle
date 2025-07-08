@@ -18,6 +18,8 @@
     "db:migrate": "pnpm --filter @spotifyle/database db:migrate",
     "db:migrate:deploy": "pnpm --filter @spotifyle/database db:migrate:deploy",
     "db:studio": "pnpm --filter @spotifyle/database db:studio",
+    "db:seed": "pnpm --filter @spotifyle/database db:seed",
+    "db:reset": "pnpm db:push --force-reset && pnpm db:seed",
     "docker:up": "./scripts/docker-compose.sh up -d",
     "docker:down": "./scripts/docker-compose.sh down",
     "docker:logs": "./scripts/docker-compose.sh logs -f",
