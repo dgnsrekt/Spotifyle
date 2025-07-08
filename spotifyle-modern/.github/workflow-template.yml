@@ -1,0 +1,77 @@
+# Workflow Template
+# Copy this file and modify for new workflows
+
+name: Workflow Name
+
+on:
+  # Trigger events
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      example_input:
+        description: 'Example input'
+        required: false
+        type: string
+
+# Environment variables
+env:
+  NODE_VERSION: 20
+
+# Permissions
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  example-job:
+    name: Example Job
+    runs-on: ubuntu-latest
+    # Use strategy for matrix builds
+    # strategy:
+    #   matrix:
+    #     node-version: [18, 20, 22]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
+        run: pnpm db:generate
+
+      # Add your job steps here
+      - name: Run task
+        run: echo "Running task..."
+
+      # Upload artifacts if needed
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: artifact-name
+      #     path: path/to/artifacts
+      #     retention-days: 7
+
+      # Add status notifications
+      # - name: Notify status
+      #   if: always()
+      #   uses: 8398a7/action-slack@v3
+      #   with:
+      #     status: ${{ job.status }}
+      #     webhook_url: ${{ secrets.SLACK_WEBHOOK }}

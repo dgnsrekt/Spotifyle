@@ -1,0 +1,118 @@
+name: Maintenance
+
+on:
+  schedule:
+    # Run every Monday at 9 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    name: Update Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+
+      - name: Update dependencies
+        run: |
+          pnpm update --recursive --interactive=false
+          pnpm audit fix
+
+      - name: Run tests
+        run: |
+          pnpm db:generate
+          pnpm test
+          pnpm build
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update dependencies'
+          title: 'chore: weekly dependency updates'
+          body: |
+            ## Weekly Dependency Updates
+            
+            This PR contains automatic dependency updates for the week.
+            
+            ### Changes
+            - Updated production dependencies
+            - Updated development dependencies
+            - Fixed any security vulnerabilities found by `pnpm audit`
+            
+            Please review the changes and merge if all tests pass.
+          branch: chore/dependency-updates
+          delete-branch: true
+
+  cleanup-artifacts:
+    name: Cleanup Old Artifacts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete old artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const days = 30;
+            const ms_per_day = 24 * 60 * 60 * 1000;
+            const now = Date.now();
+            const cutoff = new Date(now - days * ms_per_day).toISOString();
+            
+            const artifacts = await github.rest.actions.listArtifactsForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100
+            });
+            
+            for (const artifact of artifacts.data.artifacts) {
+              if (artifact.created_at < cutoff) {
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id
+                });
+                console.log(`Deleted artifact: ${artifact.name}`);
+              }
+            }
+
+  database-backup:
+    name: Database Backup Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+      - name: Check database backup
+        run: |
+          echo "Reminder: Ensure database backups are running correctly"
+          echo "Check your database provider's backup status"
+          
+      - name: Notify if action needed
+        uses: 8398a7/action-slack@v3
+        with:
+          status: custom
+          custom_payload: |
+            {
+              text: "📅 Weekly Maintenance Reminder",
+              blocks: [
+                {
+                  type: "section",
+                  text: {
+                    type: "mrkdwn",
+                    text: "*Weekly Maintenance Tasks:*\n• Check database backup status\n• Review error logs\n• Monitor performance metrics\n• Check disk usage"
+                  }
+                }
+              ]
+            }
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}

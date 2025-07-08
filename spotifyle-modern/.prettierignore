@@ -1,0 +1,43 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+dist
+build
+out
+coverage
+
+# Cache
+.turbo
+.cache
+
+# Environment
+.env
+.env.*
+
+# Git
+.git
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+
+# Test artifacts
+playwright-report
+test-results
+
+# Generated
+*.generated.*
+tsconfig.tsbuildinfo
+
+# Database
+*.db
+*.sqlite
+
+# Logs
+*.log
