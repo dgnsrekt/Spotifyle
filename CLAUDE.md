@@ -2,13 +2,86 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Important: Check TODO.md First!
+
+**Before starting any work, always check the `/spotifyle-modern/TODO.md` file to understand:**
+- What tasks have been completed
+- What work is currently in progress
+- What tasks are upcoming
+- Any known issues or blockers
+
+This ensures continuity between sessions and prevents duplicate work.
+
+## Git Workflow
+
+**Important**: The user handles all git commits and pushes. Claude should:
+- **Only write commit messages** when requested
+- **Never run** `git commit` or `git push` commands
+- **Pause after completing each task** to allow the user to commit
+- **Announce task completion** and suggest a commit message
+- **Wait for user confirmation** before proceeding to the next task
+- **Format commit messages** following conventional commits:
+  ```
+  type(scope): subject
+  
+  body (optional)
+  
+  🤖 Generated with [Claude Code](https://claude.ai/code)
+  
+  Co-Authored-By: Claude <noreply@anthropic.com>
+  ```
+
+### Example Workflow:
+1. Complete a task (e.g., "Set up authentication")
+2. Announce: "I've completed [task]. Here's a suggested commit message:"
+3. Provide formatted commit message
+4. Wait for user to commit before continuing
+
 ## Project Overview
 
-Spotifyle is a Spotify-based gamification web application that creates music-related puzzles and trivia games. It uses a microservices architecture with a Django backend (using Django Ninja for API design) and a React frontend.
+Spotifyle is a Spotify-based gamification web application that creates music-related puzzles and trivia games. 
+
+**Current Status**: The project is undergoing modernization from Django/React to Next.js/TypeScript. See `SPOTIFYLE_MODERNIZATION_PRD.md` for the complete modernization plan.
+
+### Original Architecture
+- **Backend**: Django with Django Ninja for API design
+- **Frontend**: React with Create React App
+
+### Modern Architecture (In Progress)
+- **Full-Stack**: Next.js 14 with App Router
+- **Language**: TypeScript throughout
+- **Database**: PostgreSQL with Prisma ORM
+- **Auth**: NextAuth.js v5 with Spotify OAuth
+- **Styling**: Tailwind CSS + Shadcn/ui
+- **Deployment**: Vercel + Railway/Fly.io
 
 ## Essential Commands
 
-### Backend Development (from `/api` directory)
+### Modern Project Development (from `/spotifyle-modern` directory)
+```bash
+# Install all dependencies
+pnpm install
+
+# Start development servers
+pnpm dev
+
+# Build all packages
+pnpm build
+
+# Run tests
+pnpm test
+
+# Database commands (from packages/database)
+pnpm db:generate  # Generate Prisma client
+pnpm db:push      # Push schema to database
+pnpm db:migrate   # Run migrations
+pnpm db:studio    # Open Prisma Studio
+
+# Format code
+pnpm format
+```
+
+### Original Backend Development (from `/api` directory)
 ```bash
 # Install dependencies (using Poetry)
 poetry install
