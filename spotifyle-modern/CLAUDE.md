@@ -6,10 +6,86 @@
 
 ## Git Workflow Rules
 
-1. **NEVER** create commits unless explicitly asked by the user
-2. The user will handle all git commits and pushes
-3. Always pause between completed tasks to give the user a chance to commit
-4. When staging files, provide the commit message but let the user execute the commit
+### Git Commit Workflow
+
+**CRITICAL**: After completing each task (when tests pass and functionality works):
+1. Stage all changes using `git add`
+2. Generate a descriptive commit message based on the changes
+3. Present the commit message and code changes for review
+4. **STOP AND WAIT** for explicit user approval (e.g., "approved", "looks good", "proceed")
+5. The user will review the code, tests, and commit message
+6. **ONLY** after explicit approval, create the commit using the reviewed message
+7. **NEVER** commit without explicit user approval
+
+**Workflow Summary**:
+- Complete one task from TODO.md
+- Run all tests and ensure they pass
+- Update TODO.md to mark the task as complete
+- Stage changes with git (including TODO.md)
+- Generate commit message
+- Present changes and commit message for review
+- **STOP and wait for explicit user approval**
+- **DO NOT commit until user explicitly approves**
+- Only proceed to next task after user approval
+
+### Commit Message Format
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
+```
+
+**Types**:
+- `feat`: New feature
+- `fix`: Bug fix
+- `test`: Adding tests
+- `refactor`: Code refactoring
+- `docs`: Documentation
+- `style`: Code style changes
+- `perf`: Performance improvements
+- `chore`: Maintenance tasks
+
+**Example Commit Messages**:
+```
+feat(auth): implement Spotify OAuth flow with PKCE
+
+- Add OAuth authorization endpoint with code challenge
+- Implement token exchange with refresh support
+- Include comprehensive error handling
+- Add tests for all auth scenarios
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+```
+test(game): add comprehensive game generation tests
+
+- Test all three game types (trivia, track art, lock-in)
+- Verify edge cases for insufficient user data
+- Add performance benchmarks for generation
+- Achieve 95% coverage for game module
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+```
+refactor(api): optimize Spotify API client for better performance
+
+- Implement connection pooling with aiohttp
+- Add retry logic with exponential backoff
+- Reduce API calls by 40% with smarter caching
+- Improve error messages for debugging
+
+🤖 Generated with [Claude Code](https://claude.ai/code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
 
 ## Testing Requirements
 
@@ -169,6 +245,36 @@ Take action on at least one improvement before proceeding, even if small. Contin
 4. **Test incrementally** - don't wait until the end to test
 5. **Handle errors gracefully** - always add error boundaries and try/catch blocks
 
+## Task Management
+
+### Task Completion Workflow
+
+1. **Complete the implementation** for the feature/bug fix
+2. **Run all tests** to ensure nothing breaks
+3. **Run type checking** with `npm run typecheck`
+4. **Run linting** with `npm run lint`
+5. **Update TODO.md** to mark the completed task or subtask as done
+6. **Generate commit message** describing the changes
+7. **Present for review** before final commit
+
+### Updating TODO.md
+
+**Important**: Always update TODO.md when completing any task or subtask:
+- Mark completed items with ✅ 
+- Update progress percentages for parent tasks
+- Add completion dates in format `[YYYY-MM-DD]`
+- Move completed sections to "Completed" if all subtasks are done
+- Include TODO.md updates in the same commit as the implementation
+
+Example:
+```markdown
+# Before
+- [ ] Implement Spotify OAuth with PKCE
+
+# After  
+- [x] Implement Spotify OAuth with PKCE ✅ [2024-01-13]
+```
+
 ## When to Pause for Commits
 
 Pause and notify the user after:
@@ -177,6 +283,58 @@ Pause and notify the user after:
 - Making structural changes
 - Completing items from TODO.md
 - Before moving to the next major task
+
+## Documentation Structure
+
+### Project Documentation Files
+- `CLAUDE.md` - This file, development guidelines and workflows
+- `TODO.md` - Current development tasks and priorities
+- `COMMANDS.md` - Common development commands (to be created)
+- `DOCKER.md` - Docker and containerization setup (to be created)
+- `FEATURES.md` - Feature roadmap and ideas (to be created)
+
+### Creating New Documentation
+When adding new documentation:
+1. Use clear, descriptive filenames in CAPS (e.g., `DEPLOYMENT.md`)
+2. Include a table of contents for files over 100 lines
+3. Use consistent markdown formatting
+4. Keep technical docs in the project root
+5. Update this section when adding new docs
+
+## Notification System
+
+### When to Notify the User
+
+Always notify the user in the following situations:
+
+1. **Task Completion**: When completing any task from TODO.md
+2. **Questions**: When you have questions about implementation details or need clarification
+3. **Getting Stuck**: When encountering blockers or issues that prevent progress
+4. **After Staging Changes**: When changes are staged and ready for commit review
+5. **Tool Failures**: When any tool fails or produces unexpected errors
+6. **Test Results**: After running the test suite (pass or fail)
+7. **Performance Issues**: When build times exceed 30s or tests take >5min
+8. **Security Concerns**: When detecting potential security issues
+
+### Notification Format
+Since we don't have a notification script yet, use clear message formatting:
+```
+🔔 NOTIFICATION: [Type]
+━━━━━━━━━━━━━━━━━━━━━
+[Detailed message]
+━━━━━━━━━━━━━━━━━━━━━
+```
+
+Example:
+```
+🔔 NOTIFICATION: Task Complete
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ Implemented Spotify OAuth with PKCE
+- All tests passing (53/53)
+- TypeScript checks clean
+- Ready for commit review
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
 
 ## Spotify OAuth Specific Notes
 
