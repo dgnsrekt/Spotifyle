@@ -27,6 +27,10 @@ model User {
   profile       Profile?
   gamesCreated  Game[]    @relation("Creator")
   gameSessions  GameSession[]
+  spotifyData   UserSpotifyData?
+  
+  // Additional fields
+  metadata      Json?
   
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
@@ -93,12 +97,16 @@ model Game {
   status      GameStatus  @default(CREATING)
   maxStages   Int         @default(5)
   maxPlayers  Int?
+  timeLimit   Int         @default(30)
   
   creator     User        @relation("Creator", fields: [creatorId], references: [id])
   creatorId   String
   
   stages      Stage[]
   sessions    GameSession[]
+  
+  // Additional fields for game generation
+  metadata    Json?
   
   createdAt   DateTime    @default(now())
   startedAt   DateTime?
@@ -119,6 +127,9 @@ enum GameStatus {
   WAITING
   IN_PROGRESS
   COMPLETED
+  generating
+  ready
+  failed
 }
 
 model Stage {
@@ -170,4 +181,20 @@ model Answer {
   points      Int
   
   answeredAt  DateTime    @default(now())
+}
+
+model UserSpotifyData {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Cached Spotify data
+  topArtists    Json?
+  topTracks     Json?
+  
+  // Sync metadata
+  lastSyncedAt  DateTime?
+  
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
